@@ -1,0 +1,101 @@
+import paho.mqtt.client as mqtt
+import tkinter
+import sqlite3
+import time
+
+# The broker name or IP address.
+broker = "localhost"
+# broker = "127.0.0.1"
+# broker = "10.0.0.1"
+
+# The MQTT client.
+client = mqtt.Client()
+
+# Thw main window.
+# window = tkinter.Tk()
+
+messages = []
+
+
+def process_message(client, userdata, message):
+    # Decode message.
+    message_decoded = (str(message.payload.decode("utf-8"))).split(".")
+
+    # Print message to console.
+    if message_decoded[0] != "Client connected" and message_decoded[0] != "Client disconnected":
+        print(time.ctime() + ", " +
+              message_decoded[1] + " used the RFID card: " + message_decoded[0])
+
+        # Save to sqlite database.
+        messages.append(message_decoded[1] + ", " + time.ctime())
+        # connention = sqlite3.connect("workers.db")
+        # cursor = connention.cursor()
+        # cursor.execute("INSERT INTO workers_log VALUES (?,?,?)",
+        #                (time.ctime(), message_decoded[0], message_decoded[1]))
+        # connention.commit()
+        # connention.close()
+    else:
+        print(message_decoded[0] + " : " + message_decoded[1])
+
+
+def print_log_to_window():
+
+    log_entries = messages
+    labels_log_entry = []
+    # print_log_window = tkinter.Tk()
+
+    for log_entry in log_entries:
+        # labels_log_entry.append(tkinter.Label(print_log_window, text=(
+        #     "On %s, %s used the terminal %s" % (log_entry[0], log_entry[1], log_entry[2]))))
+        print(log_entry)
+
+    for label in labels_log_entry:
+        label.pack(side="top")
+
+    # Display this window.
+    # print_log_window.mainloop()
+
+
+def create_main_window():
+    pass
+    # window.geometry("250x100")
+    # window.title("RECEIVER")
+    # label = tkinter.Label(window, text="Listening to the MQTT")
+    # exit_button = tkinter.Button(window, text="Stop", command=window.quit)
+    # print_log_button = tkinter.Button(
+    #     window, text="Print log", command=print_log_to_window)
+
+    # label.pack()
+    # exit_button.pack(side="right")
+    # print_log_button.pack(side="right")
+
+
+def connect_to_broker():
+    # Connect to the broker.
+    client.connect(broker)
+    # Send message about conenction.
+    client.on_message = process_message
+    # Starts client and subscribe.
+    client.loop_start()
+    client.subscribe("rfid")
+
+
+def disconnect_from_broker():
+    # Disconnet the client.
+    client.loop_stop()
+    client.disconnect()
+
+
+def run_receiver():
+    connect_to_broker()
+    while True:
+        pass
+        # print_log_to_window()
+    # create_main_window()
+    # Start to display window (It will stay here until window is displayed)
+    # window.mainloop()
+    disconnect_from_broker()
+
+
+if __name__ == "__main__":
+    run_receiver()

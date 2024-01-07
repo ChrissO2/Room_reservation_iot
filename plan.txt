@@ -1,0 +1,8 @@
+raspberry jest gotowe na odczyt karty
+wysyla dane jako id karty i datetime
+format danych:
+
+Topic: rfid
+Payload: 123456.T0
+
+
