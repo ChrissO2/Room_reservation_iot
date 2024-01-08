@@ -14,8 +14,8 @@ import paho.mqtt.client as mqtt
 logging.basicConfig(filename='rfid_log.txt', level=logging.DEBUG)
 
 TERMINAL_ID = 'T0'
-BROKER = 'localhost'
-# BROKER = '10.108.33.113'
+# BROKER = 'localhost'
+BROKER = '10.108.33.127'
 
 readRfidCards = {}
 client = mqtt.Client()
@@ -70,4 +70,5 @@ if __name__ == "__main__":
         read_loop()
     except Exception as e:
         logging.exception(e)
+        print(e)
         GPIO.cleanup()

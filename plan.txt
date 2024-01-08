@@ -7,3 +7,12 @@ payload: zseralizowany json
 }
 
 
+aby uruchomić brokera należy wpisać poniższe instrukcje
+sudo nano /etc/mosquitto/mosquitto.conf
+
+dopisać
+
+allow_anonymous true
+listener 1883 0.0.0.0
+
+sudo systemctl start mosquitto.service
