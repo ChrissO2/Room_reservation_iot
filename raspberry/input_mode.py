@@ -1,5 +1,8 @@
 import os
 from datetime import datetime, timedelta
+import json
+import random
+import time
 
 import RPi.GPIO as GPIO
 import board
@@ -14,6 +17,14 @@ chosen_time = datetime.now()
 INTERVAL = timedelta(minutes=5)
 
 position = 3
+
+
+def generate_sample_reservation_data():
+    isAvailable = random.random() < 0.5
+    return json.dumps({
+        'isAvailable': isAvailable
+    })
+
 
 def handle_encoder_left(channel):
     global chosen_time
@@ -35,7 +46,11 @@ def redButtonPressed(channel):
      
 def greenButtonPressed(channel):
     # call backend and wait, show message for 5 secunds and exit input mode
-    pass
+    isAvailable = generate_sample_reservation_data()
+    msg = 'Sala zostala zarezerwowana' if isAvailable else 'Sala jest zajeta w podanych godzinach'
+    time.sleep(5)
+    update_parameters({'is_free': True, 'msg': chosen_time.strftime('%H:%M'), 'mode': 'input'})
+
 
 
 def set_hour():
