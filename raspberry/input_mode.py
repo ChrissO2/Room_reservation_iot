@@ -15,14 +15,16 @@ import room_http_client
 
 MODE = 'default'
 
-
+# time displayed on encoder
 chosen_time = datetime.now()
+# How many minutes encoder will move time
 INTERVAL = timedelta(minutes=5)
-
-position = 3
 
 
 def generate_sample_reservation_data():
+    """
+    If you don't manage to write backend in time we will use this function to test :P
+    """
     isAvailable = random.random() < 0.5
     return json.dumps({
         'isAvailable': isAvailable
@@ -30,6 +32,9 @@ def generate_sample_reservation_data():
 
 
 def handle_encoder_left(channel):
+    """
+    Handle encoder movement, change time and update oled
+    """
     global chosen_time
     prev_time = chosen_time
     right = GPIO.input(encoderRight)
@@ -43,12 +48,14 @@ def handle_encoder_left(channel):
         
 
 def redButtonPressed(channel):
+    """
+    Exit input mode
+    """
     global MODE
     MODE = 'default'
     
      
 def greenButtonPressed(channel):
-    # call backend and wait, show message for 5 secunds and exit input mode
     global MODE
     if MODE == 'default':
         MODE = 'input'
@@ -89,6 +96,9 @@ GPIO.add_event_detect(buttonRed, GPIO.FALLING, callback=redButtonPressed, bounce
 GPIO.add_event_detect(buttonGreen, GPIO.FALLING, callback=greenButtonPressed, bouncetime=200)
 
 def set_hour():
+    """
+    Function called when entering input mode. Selects new start_time and updates oled.
+    """
     global MODE
     start_time = datetime.now()
     chosen_time = start_time
