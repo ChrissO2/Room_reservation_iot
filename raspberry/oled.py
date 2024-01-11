@@ -55,42 +55,60 @@ def sensors():
 
 #     disp.ShowImage(image1, 0, 0)
 
+def is_room_free(parameters):
+    return parameters["is_free"]
+
+def has_state_changed(parameters, old_parameters):
+    return old_parameters["is_free"] != parameters["is_free"] or old_parameters["mode"] != parameters["mode"] or old_parameters["msg"] != parameters["msg"]
+
 def display(disp, parameters, old_parameters):
     image1 = Image.new("RGB", (disp.width, disp.height), "WHITE")
     draw = ImageDraw.Draw(image1)
     fontLarge = ImageFont.truetype('./lib/oled/Font.ttf', 20)
     fontSmall = ImageFont.truetype('./lib/oled/Font.ttf', 13)
 
-    image = Image.open('./assets/green_checkmark.png') if parameters["is_free"] else Image.open('./assets/red_cross.png')
+    image = Image.open('./assets/green_checkmark.png') if is_room_free(parameters) else Image.open('./assets/red_cross.png')
+    image = image.resize((15, 10))
+    if has_state_changed():
+        image1.paste(image, (0, 0))
 
-    image_temperature = Image.open('./temperature.png')
-    image_temperature = image_temperature.resize((15, 10))
-
-    image_humidity = Image.open('./humidity.png')
-    image_humidity = image_humidity.resize((15, 10))
-
-    image_pressure = Image.open('./pressure.png')
-    image_pressure = image_pressure.resize((15, 10))
-
-    if old_parameters["TemperatureBME280"] != parameters["TemperatureBME280"]:
-        draw.text((17, 0), f'T: {parameters["TemperatureBME280"]}', font=fontSmall, fill="RED")
-    else:
-        draw.text((17, 0), f'T: {old_parameters["TemperatureBME280"]}', font=fontSmall, fill="RED")
-    image1.paste(image_temperature, (0, 0))
-    
-    if old_parameters["humidity"] != parameters["humidity"]:
-       draw.text((17, 25), f'H: {parameters["humidity"]}', font=fontSmall, fill="BLUE")
-    else:
-        draw.text((17, 25), f'H: {old_parameters["humidity"]}', font=fontSmall, fill="BLUE")
-    image1.paste(image_humidity, (0, 25))
-
-    if old_parameters["pressure"] != parameters["pressure"]:
-       draw.text((17, 50), f'P: {parameters["pressure"]}', font=fontSmall, fill="GREEN")
-    else:
-        draw.text((17, 50), f'P: {old_parameters["pressure"]}', font=fontSmall, fill="GREEN")
-    image1.paste(image_pressure, (0, 50))
+    if has_state_changed(parameters, old_parameters):
+        draw.text((17, 0), parameters["msg"], font=fontSmall, fill="RED")
 
     disp.ShowImage(image1, 0, 0)
+
+    # if is_room_free(old_parameters) != is_room_free(parameters) and is_room_free(parameters):
+    #     draw.text((17, 0), parameters.msg, font=fontSmall, fill="GREEN")
+    # elif is_room_free(old_parameters) != is_room_free(parameters) and not is_room_free(parameters):
+    #     draw.text((17, 0), parameters.msg, font=fontSmall, fill="RED")
+        
+    # image_temperature = Image.open('./temperature.png')
+    # image_temperature = image_temperature.resize((15, 10))
+
+    # image_humidity = Image.open('./humidity.png')
+    # image_humidity = image_humidity.resize((15, 10))
+
+    # image_pressure = Image.open('./pressure.png')
+    # image_pressure = image_pressure.resize((15, 10))
+
+    # if old_parameters["TemperatureBME280"] != parameters["TemperatureBME280"]:
+    #     draw.text((17, 0), f'T: {parameters["TemperatureBME280"]}', font=fontSmall, fill="RED")
+    # else:
+    #     draw.text((17, 0), f'T: {old_parameters["TemperatureBME280"]}', font=fontSmall, fill="RED")
+    # image1.paste(image_temperature, (0, 0))
+    
+    # if old_parameters["humidity"] != parameters["humidity"]:
+    #    draw.text((17, 25), f'H: {parameters["humidity"]}', font=fontSmall, fill="BLUE")
+    # else:
+    #     draw.text((17, 25), f'H: {old_parameters["humidity"]}', font=fontSmall, fill="BLUE")
+    # image1.paste(image_humidity, (0, 25))
+
+    # if old_parameters["pressure"] != parameters["pressure"]:
+    #    draw.text((17, 50), f'P: {parameters["pressure"]}', font=fontSmall, fill="GREEN")
+    # else:
+    #     draw.text((17, 50), f'P: {old_parameters["pressure"]}', font=fontSmall, fill="GREEN")
+    # image1.paste(image_pressure, (0, 50))
+
     
 
 # if __name__ == "__main__":
@@ -114,8 +132,8 @@ def display(disp, parameters, old_parameters):
 
 # mode is either 'default' or 'input' 
 
-old_parameters = {is_free: True, msg: 0, mode: 'default'}
-parameters = {is_free: True, msg: 0, mode: 'default'}
+old_parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
+parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
 
 disp = None
 
@@ -125,9 +143,13 @@ def initialize_oled():
     disp.Init()
     disp.clear()
 
+def update_parameters(new_parameters):
+    global parameters
+    global old_parameters
+    old_parameters = parameters
+    parameters = new_parameters
+
 def update_oled():
     global old_parameters
     global parameters
-    old_parameters = parameters
-    parameters = sensors()
     display(disp, parameters, old_parameters)
