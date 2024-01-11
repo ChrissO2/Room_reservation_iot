@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import oled
 import json
+import input_mode
 
 # The broker name or IP address.
 broker = "localhost"
@@ -27,7 +28,8 @@ broker = "localhost"
 def process_update_of_current_state(client, userdata, message):
     # Decode message.
     parameters = json.loads(str(message.payload.decode("utf-8")))
-    oled.update_oled(parameters)
+    if input_mode.MODE == 'default':
+        oled.update_parameters(parameters)
 
     # Print message to console.
     # if message_decoded[0] != "Client connected" and message_decoded[0] != "Client disconnected":
