@@ -7,6 +7,7 @@ from mfrc522 import MFRC522
 
 from config import *
 
+logging.basicConfig(filename='rfid_log.txt', level=logging.DEBUG)
 
 global_mifare_reader = MFRC522()
 global_activate_time = None
