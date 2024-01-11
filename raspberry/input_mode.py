@@ -5,6 +5,7 @@ import RPi.GPIO as GPIO
 import board
 
 from config import *
+from oled import update_parameters
 
 execute = True
 
@@ -16,12 +17,15 @@ position = 3
 
 def handle_encoder_left(channel):
     global chosen_time
+    prev_time = chosen_time
     right = GPIO.input(encoderRight)
     if not right and (chosen_time + INTERVAL).date() == datetime.now().today():
         chosen_time += INTERVAL
     elif right and (chosen_time - INTERVAL).date() == datetime.now().today():
         chosen_time -= INTERVAL
-    #call oled
+
+    if prev_time != chosen_time:
+        update_parameters({'is_free': True, 'msg': chosen_time.strftime('%H:%M'), 'mode': 'input'})
         
 
 def redButtonPressed(channel):
@@ -30,7 +34,7 @@ def redButtonPressed(channel):
     
      
 def greenButtonPressed(channel):
-    #call backend and wait, show message for 5 secunds and exit input mode
+    # call backend and wait, show message for 5 secunds and exit input mode
     pass
 
 
