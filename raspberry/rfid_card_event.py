@@ -21,7 +21,7 @@ def interpret_rfid_read(callbacks):
             global_activate_time = datetime.now()
 
             for cb in callbacks:
-                cb()
+                cb(registered_uid)
 
             blinkLed(True)
             buzz(True)
