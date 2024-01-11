@@ -1,9 +1,25 @@
-import mqtt_connection
+from datetime import datetime, timedelta
+import logging
 
+import mqtt_connection
+import RPi.GPIO as GPIO
+from mfrc522 import MFRC522
+
+from config import *
+
+logging.basicConfig(filename='rfid_log.txt', level=logging.DEBUG)
 
 global_mifare_reader = MFRC522()
 global_activate_time = None
 readRfidCards = {}
+
+
+def blinkLed(state):
+    GPIO.output(led3, state)
+
+
+def buzz(state):
+    GPIO.output(buzzerPin, not state)
 
 
 def interpret_rfid_read(callbacks):
