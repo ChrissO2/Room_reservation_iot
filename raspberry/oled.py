@@ -65,6 +65,10 @@ def handle_input_mode(paramaters, disp):
 
 def handle_info_mode(parameters, disp):
     msg = parameters['msg']
+
+    fontSmall = ImageFont.truetype('./lib/oled/Font.ttf', 13)
+    image1 = Image.new("RGB", (disp.width, disp.height), "WHITE")
+    draw = ImageDraw.Draw(image1)
     draw.text((0, 0), msg, font=fontSmall, fill='BLACK')
 
 
