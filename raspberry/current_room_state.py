@@ -27,6 +27,7 @@ broker = "localhost"
 def process_update_of_current_state(client, userdata, message):
     # Decode message.
     parameters = json.loads(str(message.payload.decode("utf-8")))
+    # Start oled screen
     oled.update_oled(parameters)
 
     # Print message to console.
