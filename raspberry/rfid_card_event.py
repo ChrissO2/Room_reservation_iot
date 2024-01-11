@@ -21,7 +21,11 @@ def blinkLed(state):
 def buzz(state):
     GPIO.output(buzzerPin, not state)
 
-
+"""
+Callback for when card is close to reader
+callbacks is an array of functions to be called when card is read
+Callbacks will be called with one argument: the card uid
+"""
 def interpret_rfid_read(callbacks):
     global global_mifare_reader
     global global_activate_time
@@ -43,7 +47,10 @@ def interpret_rfid_read(callbacks):
             buzz(True)
             send_event_to_broker(uid, global_activate_time, registered_uid)
 
-
+"""
+For debbuging purpouses only.
+Send event of rfid card closeup to broker
+"""
 def send_event_to_broker(uid, activate_time, registered_uid):
     num = 0
     for i in range(0, len(uid)):

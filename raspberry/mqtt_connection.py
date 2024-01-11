@@ -29,7 +29,9 @@ def connect_to_broker():
     client.connect(BROKER)
     call_worker('Client connected')
 
-
+"""
+Initialize mqtt connection for rfid card reader
+"""
 def initialize_mqtt_connection():
     try:
         connect_to_broker()

@@ -21,12 +21,28 @@ import busio
 #             'pressure':  round(bme280.pressure, 2)
 #     }
 
+"""
+Global display parameters
+"""
+old_parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
+parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
+
+"""
+Paremeters schema:
+ {
+     'is_free': True | False,
+     'msg': 0,
+    'mode': 'default' | 'input' | 'info'
+}
+"""
 def is_room_free(parameters):
     return parameters["is_free"]
 
 def has_state_changed(parameters, old_parameters):
     return old_parameters["is_free"] != parameters["is_free"] or old_parameters["mode"] != parameters["mode"] or old_parameters["msg"] != parameters["msg"]
 
+
+# Select which display to use based on the mode of the display.
 def display(disp, parameters, old_parameters):
     if has_state_changed(parameters, old_parameters):
         if parameters["mode"] == 'default':
@@ -36,7 +52,11 @@ def display(disp, parameters, old_parameters):
         elif parameters['mode'] == 'info':
             handle_info_mode(parameters, disp)
 
-
+"""
+Display the default mode.
+Display cross or checkmark depending on the room state.
+Display the message under the image
+"""
 def handle_default_mode(parameters, disp):
     image1 = Image.new("RGB", (disp.width, disp.height), "WHITE")
     draw = ImageDraw.Draw(image1)
@@ -50,7 +70,9 @@ def handle_default_mode(parameters, disp):
 
     disp.ShowImage(image1, 0, 0)
 
-
+"""
+Display current set time on display.
+"""
 def handle_input_mode(paramaters, disp):
     image1 = Image.new("RGB", (disp.width, disp.height), "WHITE")
     draw = ImageDraw.Draw(image1)
@@ -62,7 +84,9 @@ def handle_input_mode(paramaters, disp):
 
     disp.ShowImage(image1, 0, 0)
 
-
+"""
+Display only info message on display.
+"""
 def handle_info_mode(parameters, disp):
     msg = parameters['msg']
 
@@ -71,10 +95,9 @@ def handle_info_mode(parameters, disp):
     draw = ImageDraw.Draw(image1)
     draw.text((0, 0), msg, font=fontSmall, fill='BLACK')
 
-
-old_parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
-parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
-
+"""
+Global display object
+"""
 disp = None
 
 def initialize_oled():
@@ -83,12 +106,20 @@ def initialize_oled():
     disp.Init()
     disp.clear()
 
+
+"""
+Update parameters to be displayed on the screen.
+"""
 def update_parameters(new_parameters):
     global parameters
     global old_parameters
     old_parameters = parameters
     parameters = new_parameters
 
+
+"""
+Refresh the screen with latest parameters set with update_parameters.
+"""
 def update_oled():
     global old_parameters
     global parameters
