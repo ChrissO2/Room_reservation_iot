@@ -30,7 +30,7 @@ def redButtonPressed(channel):
     
      
 def greenButtonPressed(channel):
-    #call backend and wait
+    #call backend and wait, show message for 5 secunds and exit input mode
     pass
 
 
