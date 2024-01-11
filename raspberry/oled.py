@@ -1,3 +1,4 @@
+from textwrap import fill
 from PIL import Image, ImageDraw, ImageFont
 from config import *
 import lib.oled.SSD1331 as SSD1331
@@ -27,12 +28,13 @@ def has_state_changed(parameters, old_parameters):
     return old_parameters["is_free"] != parameters["is_free"] or old_parameters["mode"] != parameters["mode"] or old_parameters["msg"] != parameters["msg"]
 
 def display(disp, parameters, old_parameters):
-  
     if has_state_changed(parameters, old_parameters):
         if parameters["mode"] == 'default':
             handle_default_mode(parameters, disp)
         elif parameters["mode"] == 'input':
             handle_input_mode(parameters, disp)
+        elif parameters['mode'] == 'info':
+            handle_info_mode(parameters, disp)
 
 
 def handle_default_mode(parameters, disp):
@@ -59,6 +61,11 @@ def handle_input_mode(paramaters, disp):
     draw.text((17, 0), parameters["msg"], font=fontSmall, fill="RED")
 
     disp.ShowImage(image1, 0, 0)
+
+
+def handle_info_mode(parameters, disp):
+    msg = parameters['msg']
+    draw.text((0, 0), msg, font=fontSmall, fill='BLACK')
 
 
 old_parameters = {'is_free': True, 'msg': 0, 'mode': 'default'}
