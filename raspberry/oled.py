@@ -112,9 +112,10 @@ def display(disp, parameters, old_parameters):
 #         parameters = sensors()
 #         display(disp, parameters, old_parameters)
 
+# mode is either 'default' or 'input' 
 
-old_parameters = {is_free: True, time_till_free: 0}
-parameters = {is_free: True, time_till_free: 0}
+old_parameters = {is_free: True, msg: 0, mode: 'default'}
+parameters = {is_free: True, msg: 0, mode: 'default'}
 
 disp = None
 
