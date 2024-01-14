@@ -12,6 +12,7 @@ const RouterComponent = () => {
                     <Route path="/" element={<InfoBars />}>
                         <Route path="/" element={<AuthProvider />}>
                             <Route path="/" element={<Login />} />
+                            <Route path="/create-meeting" element={<Login />} />
                         </Route>
                     </Route>
                 </Routes>
