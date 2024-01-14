@@ -20,9 +20,9 @@ const AuthProvider = () => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        // if (!token) {
-        //     navigate("/");
-        // }
+        if (!token) {
+            navigate("/");
+        }
     }, [navigate, setToken, token]);
 
     return (
