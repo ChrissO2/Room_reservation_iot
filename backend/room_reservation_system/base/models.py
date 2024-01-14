@@ -4,9 +4,9 @@ from django.contrib.auth.models import User
 
 class Participant(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='participant')
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    card_id = models.CharField(max_length=100, unique=True)
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length=100, null=True)
+    card_id = models.CharField(max_length=100, unique=True, null=True)
 
 
 class Room(models.Model):

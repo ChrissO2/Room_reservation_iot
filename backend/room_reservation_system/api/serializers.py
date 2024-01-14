@@ -2,6 +2,7 @@ from base.models import Room, Meeting, MeetingParticipant, Participant
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
+
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
@@ -16,15 +17,16 @@ class UserSerializer(serializers.ModelSerializer):
             email=validated_data.get('email'),
             password=validated_data['password'],
             first_name=validated_data.get('first_name', ''),
-            last_name=validated_data.get('last_name', '')
+            last_name=validated_data.get('last_name', ''),
         )
         # Create the associated Participant
         Participant.objects.create(
             user=user,
             first_name=user.first_name,
-            last_name=user.last_name
+            last_name=user.last_name,
         )
         return user
+
 
 class ParticipantSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -32,6 +34,8 @@ class ParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participant
         fields = ['user', 'first_name', 'last_name', 'card_id']
+
+
 
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,6 +47,7 @@ class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
         fields = '__all__'
+
 
 class MeetingParticipantSerializer(serializers.ModelSerializer):
     class Meta:
