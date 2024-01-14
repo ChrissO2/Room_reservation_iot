@@ -3,7 +3,9 @@ import InfoBars from "../components/InfoBars/InfoBars";
 import AuthProvider from "../components/Auth/AuthProvider";
 import Login from "../views/Login/Login";
 import { ViewTypeProvider } from "../components/ViewType/ViewTypeProvider";
+import MeetingList from "../views/MeetingList/MeetingList";
 import CreateMeeting from "../views/CreateMeeting/CreateMeeting";
+
 
 const RouterComponent = () => {
     return (
@@ -13,6 +15,7 @@ const RouterComponent = () => {
                     <Route path="/" element={<InfoBars />}>
                         <Route path="/" element={<AuthProvider />}>
                             <Route path="/" element={<Login />} />
+                            <Route path="/meetings" element={<MeetingList />} />
                             <Route path="/create-meeting" element={<CreateMeeting />} />
                         </Route>
                     </Route>
