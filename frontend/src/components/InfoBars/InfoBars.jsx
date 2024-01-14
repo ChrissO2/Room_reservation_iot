@@ -19,13 +19,10 @@ const InfoBars = () => {
     return (
         <PageContainer>
             <StyledNavbar>
-                <WMSLogoContainer></WMSLogoContainer>
                 {/* <ViewLink to={'/'}>Home</ViewLink> */}
-                {isAdminView() && <ViewLink to={"/admin/users"}>Users</ViewLink>}
+                {isAdminView() && <ViewLink to={"/meetings"}>Meetings</ViewLink>}
                 {isAdminView() && (
-                    <ViewLink to={"/admin/password-reset-requests"}>
-                        Password Resets
-                    </ViewLink>
+                    <ViewLink to={"/create-meeting"}>Create Meeting</ViewLink>
                 )}
                 {isAdminView() && <LogoutButton />}
             </StyledNavbar>
