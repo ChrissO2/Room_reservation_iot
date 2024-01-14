@@ -5,16 +5,21 @@ import axios from 'axios';
 
 const apiURL = 'http://localhost:8000/api/';
 
-const getMeetings = () => {
-    
+const getMeetings = async () => {
+
 }
 
 const MeetingTable = ({meetings}) => {
     const [meetingList, setMeetingList] = useState([]);
 
     useEffect(() => {
-
-    }, meetingList);
+        axios
+        .get(apiURL + 'meetings/')
+        .then((res) => setMeetingList(res.data))
+        .catch(err => {
+            console.log(err);
+        })
+    }, []);
 
     return (
         <Table striped bordered hover variant="dark" responsive>
