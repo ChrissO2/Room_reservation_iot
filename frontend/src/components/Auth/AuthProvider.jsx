@@ -15,21 +15,14 @@ const AuthContext = createContext({
 });
 
 const AuthProvider = () => {
-    const [token, setToken] = useState < string > "";
+    const [token, setToken] = useState("");
     const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        if (!token) {
-            navigate("/");
-        }
-        getUsers(token).then((response) => {
-            if (response.error) {
-                navigate("/");
-            } else {
-                setToken(token);
-            }
-        });
+        // if (!token) {
+        //     navigate("/");
+        // }
     }, [navigate, setToken, token]);
 
     return (
