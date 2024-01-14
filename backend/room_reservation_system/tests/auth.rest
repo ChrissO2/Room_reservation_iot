@@ -1,14 +1,14 @@
-POST http://127.0.0.1:8000/signup/
+POST http://127.0.0.1:8000/api/signup/
 Content-Type: application/json
 
-{ "username":  "jan", "password":  "jan123", "email": "jan@example.com" }
+{ "username":  "krzysztof1", "password":  "krzysztof123", "email": "krzysztof@example.com" }
 
 ###
 
-POST http://127.0.0.1:8000/login/
+POST http://127.0.0.1:8000/api/token/
 Content-Type: application/json
 
-{ "username":  "jan", "password":  "jan123" }
+{ "username":  "krzysztof", "password":  "krzysztof123" }
 
 
 ###
