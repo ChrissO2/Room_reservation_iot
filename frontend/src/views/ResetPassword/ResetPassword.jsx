@@ -1,77 +1,86 @@
-import { FormGroup, Form, FormLabel, FormControl } from 'react-bootstrap';
-import { BannerContainer, ConfirmButton, FormContainer, LoadingAnimation } from './ResetPassword.styles';
-import React, { useEffect, useState } from 'react';
-import { postResetPassword } from '../../apis/ldapManager';
-import './ResetPassword.css';
-import Notification from '../../components/Notification/Notification';
-import { useNavigate } from 'react-router-dom';
+import { FormGroup, Form, FormLabel, FormControl } from "react-bootstrap";
+import {
+    BannerContainer,
+    ConfirmButton,
+    FormContainer,
+    LoadingAnimation,
+} from "./ResetPassword.styles";
+import React, { useEffect, useState } from "react";
+import { postResetPassword } from "../../apis/ldapManager";
+import "./ResetPassword.css";
+import Notification from "../../components/Notification/Notification";
+import { useNavigate } from "react-router-dom";
 
-type ResetPasswordState = 'default' | 'error' | 'success' | 'loading';
-const passwordMismatchError = 'Passwords do not match';
-const passwordLengthError = 'Password must be at least 8 characters long';
+const passwordMismatchError = "Passwords do not match";
+const passwordLengthError = "Password must be at least 8 characters long";
 
 const getRequestID = () => {
-    return window.location.pathname.split('/').pop();
+    return window.location.pathname.split("/").pop();
 };
 
 export const ResetPassword = () => {
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordError, setPasswordError] = useState(passwordLengthError);
-    const [requestConfirmationStatus, setRequestConfirmationStatus] = useState<ResetPasswordState>('default');
-    const [requestConfirmationMessage, setRequestConfirmationMessage] = useState('');
+    const [requestConfirmationStatus, setRequestConfirmationStatus] =
+        useState("default");
+    const [requestConfirmationMessage, setRequestConfirmationMessage] =
+        useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.MouseEvent<HTMLElement>) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const requestId = getRequestID() as string;
-        setRequestConfirmationStatus('loading');
+        const requestId = getRequestID();
+        setRequestConfirmationStatus("loading");
 
         postResetPassword(requestId, password).then((response) => {
             console.log(response);
             if (response.error) {
-                setRequestConfirmationStatus('error');
+                setRequestConfirmationStatus("error");
                 setRequestConfirmationMessage(response.error.toString());
             } else {
-                setRequestConfirmationStatus('success');
+                setRequestConfirmationStatus("success");
                 setRequestConfirmationMessage(response.message);
             }
         });
     };
 
-    const handlePasswordValidation = (passwordA: string, passwordB: string) => {
+    const handlePasswordValidation = (passwordA, passwordB) => {
         if (passwordA.length < 8) {
             setPasswordError(passwordLengthError);
         } else if (passwordA !== passwordB) {
             setPasswordError(passwordMismatchError);
         } else {
-            setPasswordError('');
+            setPasswordError("");
         }
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = (e) => {
         const newPassword = e.target.value;
         setPassword(newPassword);
         handlePasswordValidation(newPassword, confirmPassword);
     };
 
-    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleConfirmPasswordChange = (e) => {
         const newPassword = e.target.value;
         setConfirmPassword(newPassword);
         handlePasswordValidation(newPassword, password);
     };
 
     useEffect(() => {
-        if (requestConfirmationStatus === 'success') {
+        if (requestConfirmationStatus === "success") {
             setTimeout(() => {
-                navigate('/our-services');
+                navigate("/our-services");
             }, 1000);
         }
     }, [requestConfirmationStatus, navigate]);
 
     return (
         <>
-            <Notification message={requestConfirmationMessage} setMessage={setRequestConfirmationMessage} />
+            <Notification
+                message={requestConfirmationMessage}
+                setMessage={setRequestConfirmationMessage}
+            />
             <FormContainer>
                 <BannerContainer>Reset Password</BannerContainer>
                 <Form className="form">
@@ -92,14 +101,16 @@ export const ResetPassword = () => {
                             className="formInput"
                             onChange={handleConfirmPasswordChange}
                         />
-                        {passwordError && <FormLabel className="formError">{passwordError}</FormLabel>}
+                        {passwordError && (
+                            <FormLabel className="formError">{passwordError}</FormLabel>
+                        )}
                     </FormGroup>
 
-                    <ConfirmButton disabled={passwordError !== ''} onClick={handleSubmit}>
+                    <ConfirmButton disabled={passwordError !== ""} onClick={handleSubmit}>
                         Confirm
                     </ConfirmButton>
                 </Form>
-                {requestConfirmationStatus === 'loading' && <LoadingAnimation />}
+                {requestConfirmationStatus === "loading" && <LoadingAnimation />}
             </FormContainer>
         </>
     );

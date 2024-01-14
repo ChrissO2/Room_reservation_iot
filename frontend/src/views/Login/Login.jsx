@@ -1,49 +1,48 @@
-import { FormGroup, Form, FormLabel, FormControl } from 'react-bootstrap';
-import { BannerContainer, ConfirmButton, FormContainer } from './Login.styles';
-import React, { useEffect, useState } from 'react';
-import { LoadingAnimation } from '../ResetPassword/ResetPassword.styles';
-import { postLogin } from '../../apis/ldapManager';
-import './Login.css';
-import { useNavigate, useOutletContext } from 'react-router-dom';
-import Notification from '../../components/Notification/Notification';
+import { FormGroup, Form, FormLabel, FormControl } from "react-bootstrap";
+import { BannerContainer, ConfirmButton, FormContainer } from "./Login.styles";
+import React, { useEffect, useState } from "react";
+import { LoadingAnimation } from "../ResetPassword/ResetPassword.styles";
+import "./Login.css";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import Notification from "../../components/Notification/Notification";
 
 export const Login = () => {
-    const { token, setToken } = useOutletContext<{ token: string; setToken: (arg: string) => void }>();
+    const { token, setToken } = useOutletContext();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const [isWaiting, setIsWaiting] = useState(false);
-    const [loginError, setLoginError] = useState('');
+    const [loginError, setLoginError] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.MouseEvent<HTMLElement>) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoginError('');
+        setLoginError("");
         setIsWaiting(true);
-        const response = await postLogin(username, password);
-        if (response.error) {
-            setLoginError(response.error.toString());
-            setIsWaiting(false);
-        } else {
-            setToken(response.token);
-            localStorage.setItem('token', response.token);
-            setIsWaiting(false);
-            navigate('/admin/users');
-        }
+        // const response = await postLogin(username, password);
+        // if (response.error) {
+        //     setLoginError(response.error.toString());
+        //     setIsWaiting(false);
+        // } else {
+        //     setToken(response.token);
+        //     localStorage.setItem("token", response.token);
+        //     setIsWaiting(false);
+        //     navigate("/admin/users");
+        // }
     };
 
-    const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUsernameChange = (e) => {
         setUsername(e.target.value);
     };
 
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         if (token) {
-            navigate('/admin/users');
+            navigate("/admin/users");
         }
     }, [token, navigate]);
     return (
