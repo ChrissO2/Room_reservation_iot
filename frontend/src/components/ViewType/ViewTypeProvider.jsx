@@ -13,7 +13,7 @@ export const ViewTypeProvider = ({ children }) => {
     const location = useLocation();
 
     useLayoutEffect(() => {
-        if (location.pathname.includes("admin")) {
+        if (location.pathname.includes("meeting")) {
             setViewType(VIEW_TYPE.ADMIN);
         } else {
             setViewType(VIEW_TYPE.STANDARD);

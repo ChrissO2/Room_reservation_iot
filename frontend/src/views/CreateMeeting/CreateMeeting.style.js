@@ -1,8 +1,7 @@
 import { styled } from "styled-components";
 import globalColors from "../../assets/globalColors";
-
+import { FormSelect } from "react-bootstrap";
 export const FormContainer = styled.div`
-  width: 50%;
   margin: auto;
   padding: 2rem;
   border-radius: 3rem;
@@ -11,6 +10,8 @@ export const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  row-gap: 1rem;
+  width: 40vw;
 `;
 
 export const CreateMeetingPageCointainer = styled.div`
@@ -50,4 +51,15 @@ export const NewMeetingBannerContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-bottom: 2vh;
+`;
+
+export const Select = styled(FormSelect)`
+  color: white;
+  background-color: #24292d;
+  border-radius: 1rem;
+  border-style: solid;
+  border-color: rgb(17, 18, 18);
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 100%;
 `;
