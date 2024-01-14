@@ -3,13 +3,13 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.timezone import make_aware
 
-from base.models import Participant
+from base.models import Participant, Meeting
 from api.service import check_room_availability, validate_room_and_time, validate_participant
 from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer
 
@@ -19,30 +19,14 @@ def signup(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
-        token = Token.objects.create(user=user)
-        return Response({"token": token.key, "user": serializer.data}, status=status.HTTP_201_CREATED)
+        refresh = RefreshToken.for_user(user)
+        return Response(
+            {"token": {'refresh': str(refresh), 'access': str(refresh.access_token)}, "user": serializer.data},
+            status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['POST'])
-def login(request):
-    user = get_object_or_404(User, username=request.data['username'])
-    if not user.check_password(request.data['password']):
-        return Response({"detail": "Not found"}, status=status.HTTP_404_NOT_FOUND)  # same response as above line
-    token, created = Token.objects.get_or_create(user=user)
-    serializer = UserSerializer(user)
-    return Response({"token": token.key, "user": serializer.data}, status=status.HTTP_201_CREATED)
-
-
-@api_view(['GET'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def test_token(request):
-    return Response("passed for {}".format(request.user.email), status=status.HTTP_200_OK)
-
-
 @api_view(['PUT'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def participant(request):
     try:
@@ -58,23 +42,58 @@ def participant(request):
 
 
 @api_view(['POST'])
-@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-def meetings(request):
+def meeting_add(request):
     try:
         organizer = validate_participant(request.user)
+        request.data["organizer"] = organizer.id
         serializer = MeetingSerializer(data=request.data)
-        serializer.data["organizer"] = organizer.id
 
         if serializer.is_valid():
-            room_id, start_time, end_time = validate_room_and_time(serializer.data['room_id'],
-                                                                   serializer.data["start_time"],
-                                                                   serializer.data["end_time"])
-            if check_room_availability(room_id, start_time, end_time):
-                serializer.save()
+            room_id, start_time, end_time = validate_room_and_time(request.data['room'],
+                                                                   request.data["start_time"],
+                                                                   request.data["end_time"])
+            if not check_room_availability(room_id, start_time, end_time):
+                return Response({'error': 'Room not available at given time'}, status=status.HTTP_409_CONFLICT)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def meetings(request):
+    meetings_list = Meeting.objects.all()
+    serializer = MeetingSerializer(meetings_list, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def meeting(request, meeting_id):
+    found_meeting = get_object_or_404(Meeting, id=meeting_id)
+    serializer = MeetingSerializer(found_meeting)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def upcoming_meetings(request):
+    now = make_aware(datetime.now())
+    meetings_list = Meeting.objects.filter(start_time__gt=now)
+    serializer = MeetingSerializer(meetings_list, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def current_meetings(request):
+    now = make_aware(datetime.now())
+    meetings_list = Meeting.objects.filter(start_time__lte=now, end_time__gte=now)
+    serializer = MeetingSerializer(meetings_list, many=True)
+    return Response(serializer.data)
+@api_view(['GET'])
+def finished_meetings(request):
+    now = make_aware(datetime.now())
+    meetings_list = Meeting.objects.filter(end_time__lt=now)
+    serializer = MeetingSerializer(meetings_list, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET'])
@@ -89,37 +108,3 @@ def check_room_availability_view(request):
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'room_available': room_available}, status=status.HTTP_200_OK)
-
-
-# class RoomViewSet(viewsets.ModelViewSet):
-#     queryset = Room.objects.all()
-#     serializer_class = RoomSerializer
-#
-#     def get_permissions(self):
-#         if self.action in ['create', 'update', 'partial_update', 'destroy']:
-#             return [permissions.IsAdminUser()]
-#         return [permissions.IsAuthenticated()]
-#
-#
-# class MeetingViewSet(viewsets.ModelViewSet):
-#     queryset = Meeting.objects.all()
-#     serializer_class = MeetingSerializer
-#
-#     def get_permissions(self):
-#         return [permissions.IsAuthenticated()]
-#
-#
-# class MeetingParticipantViewSet(viewsets.ModelViewSet):
-#     queryset = MeetingParticipant.objects.all()
-#     serializer_class = MeetingParticipantSerializer
-#
-#
-# class ParticipantViewSet(viewsets.ModelViewSet):
-#     queryset = Participant.objects.all()
-#     serializer_class = ParticipantSerializer
-#
-#     def get_permissions(self):
-#         if self.action in ['destroy']:
-#             return [permissions.IsAdminUser()]
-#         else:
-#             return [permissions.AllowAny()]
