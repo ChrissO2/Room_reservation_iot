@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -14,6 +16,8 @@ class Room(models.Model):
 
 
 class Meeting(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=100, null=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     organizer = models.ForeignKey(Participant, on_delete=models.SET_NULL, null=True, related_name='organized_meetings')
