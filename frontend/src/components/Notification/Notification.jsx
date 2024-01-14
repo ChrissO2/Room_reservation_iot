@@ -1,16 +1,13 @@
-import { Toast } from 'react-bootstrap';
-import './Notification.css';
-import { useEffect } from 'react';
-interface NotificationProps {
-    message: string;
-    setMessage: (arg: string) => void;
-}
+import { Toast } from "react-bootstrap";
+import "./Notification.css";
+import { useEffect } from "react";
+
 const NOTIFICATION_TIMEOUT = 5000;
 
-function Notification({ message, setMessage }: NotificationProps) {
+function Notification({ message, setMessage }) {
     useEffect(() => {
         setTimeout(() => {
-            setMessage('');
+            setMessage("");
         }, NOTIFICATION_TIMEOUT);
     }, [message, setMessage]);
     return (
