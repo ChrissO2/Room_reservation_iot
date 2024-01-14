@@ -36,7 +36,6 @@ class ParticipantSerializer(serializers.ModelSerializer):
         fields = ['user', 'first_name', 'last_name', 'card_id']
 
 
-
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
@@ -46,13 +45,14 @@ class RoomSerializer(serializers.ModelSerializer):
 class MeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
-        fields = '__all__'
+        fields = ['id', 'name', 'start_time', 'end_time', 'organizer', 'room']
+
 
 
 class MeetingParticipantSerializer(serializers.ModelSerializer):
     class Meta:
         model = MeetingParticipant
-        fields = ['meeting', 'participant', 'enter_time']
+        fields = '__all__'
 
     def create(self, validated_data):
         meeting_participant = MeetingParticipant.objects.create(**validated_data)
