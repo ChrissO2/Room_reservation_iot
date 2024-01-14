@@ -19,9 +19,7 @@ const InfoBars = () => {
     return (
         <PageContainer>
             <StyledNavbar>
-                <WMSLogoContainer>
-                    <WMSLogo href={isAdminView() ? window.location.origin : WMS_URL} />
-                </WMSLogoContainer>
+                <WMSLogoContainer></WMSLogoContainer>
                 {/* <ViewLink to={'/'}>Home</ViewLink> */}
                 {isAdminView() && <ViewLink to={"/admin/users"}>Users</ViewLink>}
                 {isAdminView() && (
@@ -32,7 +30,7 @@ const InfoBars = () => {
                 {isAdminView() && <LogoutButton />}
             </StyledNavbar>
             <Outlet />
-            <StyledFooter>LDAP User Managment Tool © 2023 by WMS_DEV</StyledFooter>
+            <StyledFooter>Meeting Room System © 2023 by PIWO</StyledFooter>
         </PageContainer>
     );
 };

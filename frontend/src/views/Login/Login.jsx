@@ -29,6 +29,8 @@ export const Login = () => {
         //     setIsWaiting(false);
         //     navigate("/admin/users");
         // }
+        setIsWaiting(false);
+        navigate("/create-meeting");
     };
 
     const handleUsernameChange = (e) => {
@@ -49,7 +51,7 @@ export const Login = () => {
         <>
             <Notification message={loginError} setMessage={setLoginError} />
             <FormContainer>
-                <BannerContainer>LDAP Admin Panel</BannerContainer>
+                <BannerContainer>Meeting Room System</BannerContainer>
                 <Form className="form">
                     <FormGroup className="formGroup">
                         <FormLabel>Username</FormLabel>
