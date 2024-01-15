@@ -11,7 +11,6 @@ broker = "localhost"
 # The MQTT client.
 
 
-
 # def process_message(client, userdata, message):
 #     # Decode message.
 #     message_decoded = (str(message.payload.decode("utf-8"))).split(".")
@@ -25,10 +24,11 @@ broker = "localhost"
 #     else:
 #         print(message_decoded[0] + " : " + message_decoded[1])
 
+
 def process_update_of_current_state(client, userdata, message):
     # Decode message.
     parameters = json.loads(str(message.payload.decode("utf-8")))
-    if input_mode.MODE == 'default':
+    if input_mode.MODE == "default":
         oled.update_parameters(parameters)
 
     # Print message to console.
