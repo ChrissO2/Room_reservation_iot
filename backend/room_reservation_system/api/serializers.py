@@ -50,6 +50,7 @@ class MeetingSerializer(serializers.ModelSerializer):
 
 
 class MeetingParticipantSerializer(serializers.ModelSerializer):
+    participant = ParticipantSerializer(read_only=True)
     class Meta:
         model = MeetingParticipant
         fields = '__all__'
