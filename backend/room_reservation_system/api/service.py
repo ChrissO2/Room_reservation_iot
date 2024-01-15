@@ -27,7 +27,7 @@ def validate_participant(user):
 
 def validate_room_and_time(room_id, start_time, end_time):
     if not room_id or not start_time or not end_time:
-        raise ValueError('Missing parameters.')
+        raise ValueError('Missing parameters. ')
 
     start_time = datetime.fromisoformat(start_time)
     end_time = datetime.fromisoformat(end_time)
