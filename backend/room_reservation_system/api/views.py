@@ -11,7 +11,7 @@ from django.utils.timezone import make_aware
 
 from base.models import Participant, Meeting, MeetingParticipant, Room
 from api.service import check_room_availability, validate_room_and_time, validate_participant, validate_new_rfid_meeting
-from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer
+from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer, DetailMeetingSerializer
 
 
 @api_view(['POST'])
@@ -102,7 +102,7 @@ def meeting(request, meeting_id):
 def upcoming_meetings(request):
     now = make_aware(datetime.now())
     meetings_list = Meeting.objects.filter(start_time__gt=now)
-    serializer = MeetingSerializer(meetings_list, many=True)
+    serializer = DetailMeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
 
 
