@@ -9,9 +9,9 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.timezone import make_aware
 
-from base.models import Participant, Meeting
-from api.service import check_room_availability, validate_room_and_time, validate_participant
-from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer
+from base.models import Participant, Meeting, MeetingParticipant, Room
+from api.service import check_room_availability, validate_room_and_time, validate_participant, validate_new_rfid_meeting
+from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer
 
 
 @api_view(['POST'])
@@ -61,6 +61,24 @@ def meeting_add(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+def meeting_add_rfid(request):
+    try:
+        start_time = request.data["start_time"]
+        end_time = request.data["end_time"]
+        organizer_card_id = request.data["organizer_card_id"]
+        rfid_reader_id = request.data["rfid_reader_id"]
+
+        start_time, end_time, organizer, room = validate_new_rfid_meeting(start_time, end_time, organizer_card_id, rfid_reader_id)
+        name = (organizer.first_name + " " + organizer.last_name + "s' meeting")
+
+        new_meeting = Meeting.objects.create(name=name, start_time=start_time, end_time=end_time, room=room, organizer=organizer)
+        serializer = MeetingSerializer(new_meeting)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 def meetings(request):
     meetings_list = Meeting.objects.all()
@@ -82,12 +100,15 @@ def upcoming_meetings(request):
     serializer = MeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def current_meetings(request):
     now = make_aware(datetime.now())
     meetings_list = Meeting.objects.filter(start_time__lte=now, end_time__gte=now)
     serializer = MeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
+
+
 @api_view(['GET'])
 def finished_meetings(request):
     now = make_aware(datetime.now())
