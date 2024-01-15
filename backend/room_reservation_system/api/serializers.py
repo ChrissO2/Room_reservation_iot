@@ -1,3 +1,4 @@
+import datetime
 from base.models import Room, Meeting, MeetingParticipant, Participant
 from django.contrib.auth.models import User
 from rest_framework import serializers
@@ -65,3 +66,26 @@ class MeetingParticipantSerializer(serializers.ModelSerializer):
         instance.enter_time = validated_data.get('enter_time', instance.enter_time)
         instance.save()
         return instance
+    
+
+class DetailMeetingSerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField()
+    start_time = serializers.SerializerMethodField()
+    end_time = serializers.SerializerMethodField()
+    organizer = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Meeting
+        fields = ['id', 'name', 'start_time', 'end_time', 'organizer', 'room', 'date']
+
+    def get_date(self, obj):
+        return obj.start_time.strftime('%d.%m.%Y')
+    
+    def get_start_time(self, obj):
+        return obj.start_time.strftime('%H:%M')
+
+    def get_end_time(self, obj):
+        return obj.end_time.strftime('%H:%M')
+
+    def get_organizer(self, obj):
+        return obj.organizer.first_name + ' ' + obj.organizer.last_name
