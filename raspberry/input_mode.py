@@ -10,6 +10,7 @@ import board
 from config import *
 from oled import update_parameters
 import room_http_client
+import time
 
 # execute = True
 
@@ -34,11 +35,16 @@ def handle_encoder_left(channel):
     Handle encoder movement, change time and update oled
     """
     global chosen_time
+    global MODE
+
+    if MODE != "input":
+        return
+
     prev_time = chosen_time
     right = GPIO.input(encoderRight)
-    if not right and (chosen_time + INTERVAL).date() == datetime.now().today():
+    if not right:
         chosen_time += INTERVAL
-    elif right and (chosen_time - INTERVAL).date() == datetime.now().today():
+    elif right:
         chosen_time -= INTERVAL
 
     if prev_time != chosen_time:
@@ -53,6 +59,9 @@ def redButtonPressed(channel):
     """
     global MODE
     MODE = "default"
+    update_parameters(
+        {"is_free": True, "msg": chosen_time.strftime("%H:%M"), "mode": "default"}
+    )
 
 
 def greenButtonPressed(channel):
