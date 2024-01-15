@@ -1,39 +1,39 @@
 # Test 1: Check availability when there is no overlap (before the scheduled meeting)
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T09:00:00&end_time=2024-02-01T10:00:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T09:00:00&end_time=2024-02-01T10:00:00
 ###
 
 # Test 2: Check availability when there is no overlap (after the scheduled meeting)
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T13:00:00&end_time=2024-02-01T14:00:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T13:00:00&end_time=2024-02-01T14:00:00
 ###
 
 # Test 3: Check availability when start time overlaps with an existing meeting
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T10:30:00&end_time=2024-02-01T11:30:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T10:30:00&end_time=2024-02-01T11:30:00
 ###
 
 # Test 4: Check availability when end time overlaps with an existing meeting
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T10:30:00&end_time=2024-02-01T11:30:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T10:30:00&end_time=2024-02-01T11:30:00
 ###
 
 # Test 5: Check availability when the time slot completely covers the existing meeting
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T10:00:00&end_time=2024-02-01T13:00:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T10:00:00&end_time=2024-02-01T13:00:00
 ###
 
 # Test 6: Check availability when the time slot is completely covered by the existing meeting
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T11:15:00&end_time=2024-02-01T11:45:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T11:15:00&end_time=2024-02-01T11:45:00
 ###
 
 # Test 7: Check availability with invalid room_id
-GET http://localhost:8000/api/check_room_availability/?room_id=999&start_time=2024-02-01T09:00:00&end_time=2024-02-01T10:00:00
+GET http://localhost:8000/api/room_availability/?room_id=999&start_time=2024-02-01T09:00:00&end_time=2024-02-01T10:00:00
 ###
 
 # Test 8: Check availability with missing parameters
-GET http://localhost:8000/api/check_room_availability/?room_id=1&start_time=2024-02-01T09:00:00
+GET http://localhost:8000/api/room_availability/?room_id=1&start_time=2024-02-01T09:00:00
 ###
 
 #Test 9: Check availability with invalid date format
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01 09:00&end_time=2024--02-01 10:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01 09:00&end_time=2024--02-01 10:00
 ###
 
 #Test 11: Start time after end time
-GET http://localhost:8000/api/check_room_availability/?room_id=2&start_time=2024-02-01T13:00:00&end_time=2024-02-01T12:00:00
+GET http://localhost:8000/api/room_availability/?room_id=2&start_time=2024-02-01T13:00:00&end_time=2024-02-01T12:00:00
 ###
