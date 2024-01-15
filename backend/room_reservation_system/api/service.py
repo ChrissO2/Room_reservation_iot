@@ -4,7 +4,7 @@ from datetime import datetime
 
 def check_room_availability(room_id, start_time, end_time):
     if not Room.objects.filter(id=room_id).exists():
-        raise ValueError("Room doesn't exist.")
+        raise ValueError("Room does not exist.")
 
     overlapping_meetings = Meeting.objects.filter(
         room_id=room_id,
@@ -32,7 +32,7 @@ def validate_room_and_time(room_id, start_time, end_time):
     start_time = datetime.fromisoformat(start_time)
     end_time = datetime.fromisoformat(end_time)
 
-    if start_time > end_time:
+    if start_time >= end_time:
         raise ValueError('Start time must be before end time.')
 
     if not Room.objects.filter(id=room_id).exists():
