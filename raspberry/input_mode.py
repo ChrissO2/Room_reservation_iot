@@ -87,18 +87,10 @@ def reserve_room_from_input_mode(organizer_id):
     if is_free:
         room_http_client.reserve_room(datetime.now(), chosen_time, organizer_id)
         MODE = "default"
-        update_parameters(
-            {"is_free": True, "msg": "Sala została zarejestrowana", "mode": "info"}
-        )
-        time.sleep(5)
         update_parameters({"is_free": True, "msg": "Wolna", "mode": "default"})
 
     else:
         MODE = "default"
-        update_parameters(
-            {"is_free": True, "msg": "Sala jest zajeta w tym czasie", "mode": "info"}
-        )
-        time.sleep(5)
         update_parameters({"is_free": True, "msg": "Wolna", "mode": "default"})
 
 
