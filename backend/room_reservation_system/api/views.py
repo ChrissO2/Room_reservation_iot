@@ -123,7 +123,7 @@ def finished_meetings(request):
 
 
 @api_view(['GET'])
-def check_room_availability_view(request):
+def room_availability(request):
     room_id = request.query_params.get('room_id')
     start_time = request.query_params.get('start_time')
     end_time = request.query_params.get('end_time')
@@ -133,4 +133,21 @@ def check_room_availability_view(request):
         room_available = check_room_availability(room_id, start_time, end_time)
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
-    return Response({'room_available': room_available}, status=status.HTTP_200_OK)
+    return Response({'is_free': room_available}, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def room_availability_rfid(request):
+    start_time = request.data['start_time']
+    end_time = request.data['end_time']
+    rfid_reader_id = request.data['rfid_reader_id']
+
+    try:
+        # TODO do poprawy (dwa calle do bazy zamiast jednego)
+        if not Room.objects.filter(rfid_reader_id=rfid_reader_id).exists():
+            raise ValueError('Room does not exist.')
+        room_id = Room.objects.get(rfid_reader_id=rfid_reader_id).id
+        room_id, start_time, end_time = validate_room_and_time(room_id, start_time, end_time)
+        room_available = check_room_availability(room_id, start_time, end_time)
+    except ValueError as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    return Response({'is_free': room_available}, status=status.HTTP_200_OK)
