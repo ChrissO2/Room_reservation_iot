@@ -1,31 +1,48 @@
 import http.client
 import json
 
-BACKEND_IP = ''
+BACKEND_IP = ""
 
 connection = http.client.HTTPConnection(BACKEND_IP, 80, timeout=10)
 
-DEFAULT_HEADERS = {'Content-type': 'application/json'}
-
+DEFAULT_HEADERS = {"Content-type": "application/json"}
+DEFAULT_RFID_ID = 1
 
 """
 Httprequest to backend to check if room is free at given time
 """
+
+
 def is_room_free_at(start_date, end_date):
-    
-    json_data = json.dumps({'start_date': start_date, 'end_date': end_date})
-    connection.request('GET', '/room_availability', json_data, DEFAULT_HEADERS)
+    json_data = json.dumps(
+        {
+            "start_date": start_date,
+            "end_date": end_date,
+            "rfid_reader_id": DEFAULT_RFID_ID,
+        }
+    )
+    connection.request("GET", "/room_availability", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     response_data = json.loads(response.read().decode())
-    return response_data['is_free']
+    return response_data["is_free"]
 
 
 """
-Http request to backend to reserve room at given time by an organizer with given id
+Http request to backend
+to reserve room at given
+time by an organizer with given id
 """
-def reserve_room(start_date, end_date, organizer_id):
-    json_data = json.dumps({'start_date': start_date, 'end_date': end_date, 'organizer_id': organizer_id})
-    connection.request('POST', '/new_meeting', json_data, DEFAULT_HEADERS)
+
+
+def reserve_room(start_date, end_date, organizer_card_id):
+    json_data = json.dumps(
+        {
+            "start_date": start_date,
+            "end_date": end_date,
+            "organizer_card_id": organizer_id,
+        }
+    )
+    connection.request("POST", "/new_meeting", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     response_data = json.loads(response.read().decode())
-    return response_data['is_free']
+    return response_data["is_free"]
