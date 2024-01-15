@@ -47,16 +47,19 @@ def meeting_add(request):
     try:
         organizer = validate_participant(request.user)
         request.data["organizer"] = organizer.id
-        serializer = MeetingSerializer(data=request.data)
 
+        room_id, start_time, end_time = validate_room_and_time(request.data["room"],
+                                                               request.data["start_time"],
+                                                               request.data["end_time"])
+        if not check_room_availability(room_id, start_time, end_time):
+            return Response({'error': 'Room not available at given time'}, status=status.HTTP_409_CONFLICT)
+
+        serializer = MeetingSerializer(data=request.data)
         if serializer.is_valid():
-            room_id, start_time, end_time = validate_room_and_time(request.data['room'],
-                                                                   request.data["start_time"],
-                                                                   request.data["end_time"])
-            if not check_room_availability(room_id, start_time, end_time):
-                return Response({'error': 'Room not available at given time'}, status=status.HTTP_409_CONFLICT)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
