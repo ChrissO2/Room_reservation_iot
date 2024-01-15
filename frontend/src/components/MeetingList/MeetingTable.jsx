@@ -3,7 +3,7 @@ import MeetingItem from "./MeetingItem";
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 
-const apiURL = 'http://localhost:8000/api/';
+const apiURL = 'http://localhost:8000/api/meetings/upcoming/';
 
 const getMeetings = async () => {
 
@@ -25,10 +25,11 @@ const MeetingTable = ({meetings}) => {
         <Table striped bordered hover variant="dark" responsive>
             <thead>
                 <tr>
+                    <th>Room number</th>
+                    <th>Host</th>
+                    <th>Date</th>
                     <th>Start time</th>
                     <th>End time</th>
-                    <th>Room number</th>
-                    <th>Organizer</th>
                 </tr>
             </thead>
             <tbody>
