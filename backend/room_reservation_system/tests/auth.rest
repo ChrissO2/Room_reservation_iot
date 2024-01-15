@@ -1,0 +1,27 @@
+POST http://127.0.0.1:8000/api/signup/
+Content-Type: application/json
+
+{ "username":  "krzysztof1", "password":  "krzysztof123", "email": "krzysztof@example.com" }
+
+###
+
+POST http://127.0.0.1:8000/api/token/
+Content-Type: application/json
+
+{ "username":  "krzysztof", "password":  "krzysztof123" }
+
+
+###
+
+GET http://127.0.0.1:8000/test-token/
+Content-Type: application/json
+Authorization: Token d9bc4e5265e7f57b577796f4740d45bc7328aa54
+
+###
+
+PUT http://127.0.0.1:8000/participant/
+Content-Type: application/json
+Authorization: Token d9bc4e5265e7f57b577796f4740d45bc7328aa54
+
+{ "first_name": "new_jan", "card_id":  "0"}
+
