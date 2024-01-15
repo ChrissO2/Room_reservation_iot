@@ -137,15 +137,15 @@ def room_availability(request):
 
 @api_view(['GET'])
 def room_availability_rfid(request):
-    start_time = request.query_params.get('start_time')
-    end_time = request.query_params.get('end_time')
-    rfid_reader_id = request.query_params.get('rfid_reader_id')
+    start_time = request.data['start_time']
+    end_time = request.data['end_time']
+    rfid_reader_id = request.data['rfid_reader_id']
 
     try:
         # TODO do poprawy (dwa calle do bazy zamiast jednego)
         if not Room.objects.filter(rfid_reader_id=rfid_reader_id).exists():
             raise ValueError('Room does not exist.')
-        room_id = Room.objects.get(rfid_reader_id=rfid_reader_id)
+        room_id = Room.objects.get(rfid_reader_id=rfid_reader_id).id
         room_id, start_time, end_time = validate_room_and_time(room_id, start_time, end_time)
         room_available = check_room_availability(room_id, start_time, end_time)
     except ValueError as e:
