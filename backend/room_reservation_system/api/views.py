@@ -89,8 +89,10 @@ def meetings(request):
 @api_view(['GET'])
 def meeting(request, meeting_id):
     found_meeting = get_object_or_404(Meeting, id=meeting_id)
-    serializer = MeetingSerializer(found_meeting)
-    return Response(serializer.data)
+    meeting_participants = MeetingParticipant.objects.filter(meeting=found_meeting).all()
+    meeting_serializer = MeetingSerializer(found_meeting)
+    meeting_participant_serializer = MeetingParticipantSerializer(meeting_participants, many=True)
+    return Response({"meeting": meeting_serializer.data, "participants": meeting_participant_serializer.data})
 
 
 @api_view(['GET'])
