@@ -27,15 +27,13 @@ const MeetingTable = ({meetings}) => {
                 <tr>
                     <th>Start time</th>
                     <th>End time</th>
-                    <th>Date</th>
-                    <th>Room</th>
+                    <th>Room number</th>
                     <th>Organizer</th>
-                    <th>Description</th>
                 </tr>
             </thead>
             <tbody>
-                {meetings.map((meeting) => (
-                    <MeetingItem meeting={meeting} />
+                {meetingList.map((meeting) => (
+                    <MeetingItem key={meeting.id} meeting={meeting} />
                 ))}
             </tbody>
         </Table>
