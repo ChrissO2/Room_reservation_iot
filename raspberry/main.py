@@ -10,3 +10,7 @@ def main():
     while True:
         rfid_card_event.interpret_rfid_read([input_mode.reserve_room_from_input_mode])
         oled.update_oled()
+
+
+if __name__ == '__main__':
+    main()
