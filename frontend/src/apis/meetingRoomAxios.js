@@ -29,5 +29,5 @@ export const getMeetingRooms = (token) => {
 
 export const createMeeting = (token, meetingParamaters) => {
   // return true;
-  return MeetingRoomAxios(token).post("/new-meeting", meetingParamaters);
+  return MeetingRoomAxios(token).post("/new_meeting", meetingParamaters);
 };
