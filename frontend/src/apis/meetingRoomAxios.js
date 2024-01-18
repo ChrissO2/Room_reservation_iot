@@ -1,10 +1,12 @@
 import axios from "axios";
 
-const API_URL = "localhost";
+const API_URL = "http://62.171.156.180:8000/";
+
+// API_URL.port = "8000";
 
 export const MeetingRoomAxios = (token) => {
   return axios.create({
-    baseUrl: API_URL,
+    baseURL: API_URL,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token || ""}`,
@@ -15,17 +17,17 @@ export const MeetingRoomAxios = (token) => {
 export const login = (username, password) => {
   // throw new Error();
   // return { token: "hello" };
-  return MeetingRoomAxios().post("/login", {
+  return MeetingRoomAxios().post("/api/token", {
     username,
     password,
   });
 };
 
 export const getMeetingRooms = (token) => {
-  return MeetingRoomAxios(token).get("/meetings");
+  return MeetingRoomAxios(token).get("/api/meetings");
 };
 
 export const createMeeting = (token, meetingParamaters) => {
   // return true;
-  return MeetingRoomAxios(token).post("/new-meeting", meetingParamaters);
+  return MeetingRoomAxios(token).post("/api/new_meeting", meetingParamaters);
 };
