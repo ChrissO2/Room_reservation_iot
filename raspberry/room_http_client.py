@@ -16,8 +16,8 @@ Httprequest to backend to check if room is free at given time
 def is_room_free_at(start_date, end_date):
     json_data = json.dumps(
         {
-            "start_date": start_date,
-            "end_date": end_date,
+            "start_time": start_date,
+            "end_time": end_date,
             "rfid_reader_id": DEFAULT_RFID_ID,
         }
     )
@@ -39,7 +39,8 @@ def reserve_room(start_date, end_date, organizer_card_id):
         {
             "start_date": start_date,
             "end_date": end_date,
-            "organizer_card_id": organizer_id,
+            "rfid_reader_id": DEFAULT_RFID_ID,
+            "organizer_card_id": organizer_card_id,
         }
     )
     connection.request("POST", "/new_meeting", json_data, DEFAULT_HEADERS)
