@@ -48,7 +48,7 @@ def check_room_is_available(room_id):
     current_time = datetime.datetime.now()
     room_available = Meeting.objects.filter(
         room_id=room_id,
-        start_time__gt=current_time,
+        start_time__lte=current_time,
         end_time__gt=current_time
     ).exists()
 
