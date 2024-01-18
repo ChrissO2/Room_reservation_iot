@@ -15,7 +15,7 @@ export const MeetingRoomAxios = (token) => {
 export const login = (username, password) => {
   // throw new Error();
   // return { token: "hello" };
-  return MeetingRoomAxios().post("/api/token", {
+  return MeetingRoomAxios().get("/api/token", {
     username,
     password,
   });
