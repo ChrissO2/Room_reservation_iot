@@ -24,8 +24,8 @@ const CreateMeeting = (props) => {
     e.preventDefault();
     try {
       const result = await createMeeting(token, {
-        startTime,
-        endTime,
+        start_time: startTime,
+        end_time: endTime,
         name,
         room,
       });
