@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "localhost";
+const API_URL = "62.171.156.180";
 
 export const MeetingRoomAxios = (token) => {
   return axios.create({
@@ -15,7 +15,7 @@ export const MeetingRoomAxios = (token) => {
 export const login = (username, password) => {
   // throw new Error();
   // return { token: "hello" };
-  return MeetingRoomAxios().post("/login", {
+  return MeetingRoomAxios().post("/token", {
     username,
     password,
   });
