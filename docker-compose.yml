@@ -9,6 +9,23 @@ services:
     build: ./frontend/
     ports:
       - "3000:80"
+  broker:
+    container_name: iot-broker
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883" #default mqtt port
+      - "9001:9001" #default mqtt port for websockets
+    volumes:
+      - ./.broker_config/:/mosquitto/config:rw
+      - broker-data:/mosquitto/data:rw
+      - broker-log:/mosquitto/log:rw
+    user: "1000:1000"
+  broker-test-client:
+    container_name: iot-broker-test-client
+    image: eclipse-mosquitto
+volumes:
+  broker-log:
+  broker-data:
 
 networks:
   default:
