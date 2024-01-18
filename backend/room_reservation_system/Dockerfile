@@ -21,6 +21,7 @@ COPY . $DockerHOME
 # run this command to install all dependencies  
 RUN pip install -r requirements.txt  
 
+RUN python manage.py makemigraions
 RUN python manage.py migrate
 # port where the Django app runs  
 EXPOSE 8000  
