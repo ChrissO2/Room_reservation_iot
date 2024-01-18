@@ -27,8 +27,8 @@ export const Login = () => {
     try {
       const response = await login(username, password);
       console.log(response);
-      setToken(response.access);
-      localStorage.setItem("token", response.access);
+      setToken(response.token.access);
+      localStorage.setItem("token", response.token.access);
       setIsWaiting(false);
       navigate("/meetings");
     } catch {
