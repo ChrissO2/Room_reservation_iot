@@ -11,7 +11,8 @@ from django.utils.timezone import make_aware
 
 from base.models import Participant, Meeting, MeetingParticipant, Room
 from api.service import check_room_availability, validate_room_and_time, validate_participant, validate_new_rfid_meeting
-from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer, DetailMeetingSerializer
+from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer, \
+    DetailMeetingSerializer, RoomSerializer
 
 
 @api_view(['POST'])
@@ -85,6 +86,11 @@ def meeting_add_rfid(request):
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+@api_view(['GET'])
+def rooms(request):
+    rooms_list = Room.objects.all()
+    serializer = RoomSerializer(rooms_list, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def meetings(request):

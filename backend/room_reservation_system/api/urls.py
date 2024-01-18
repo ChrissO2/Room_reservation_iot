@@ -13,6 +13,7 @@ urlpatterns = [
     re_path('new_meeting', views.meeting_add),
     re_path('meetings/upcoming/', views.upcoming_meetings),
     re_path('meetings/current/', views.current_meetings),
+    re_path('rooms', views.rooms),
     re_path('meetings/finished/', views.finished_meetings),
     re_path('meetings', views.meetings),
     re_path('room_availability_rfid', views.room_availability_rfid),
