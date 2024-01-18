@@ -77,7 +77,7 @@ const CreateMeeting = (props) => {
           </Select>
         </FormGroup>
         <ConfirmMeetingButton onClick={handleSubmit}>
-          Potwierdz
+          Potwierdź
         </ConfirmMeetingButton>
       </FormContainer>
     </CreateMeetingPageCointainer>

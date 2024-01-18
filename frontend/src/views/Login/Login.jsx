@@ -26,6 +26,7 @@ export const Login = () => {
     setIsWaiting(true);
     try {
       const response = await login(username, password);
+      console.log(response);
       setToken(response.access);
       localStorage.setItem("token", response.access);
       setIsWaiting(false);
