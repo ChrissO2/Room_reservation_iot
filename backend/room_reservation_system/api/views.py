@@ -17,8 +17,12 @@ from .serializers import UserSerializer, ParticipantSerializer, MeetingSerialize
 @api_view(['POST'])
 def signup(request):
     serializer = UserSerializer(data=request.data)
+    card_id = request.data.get("card_id")
     if serializer.is_valid():
         user = serializer.save()
+        participant = Participant.objects.get(user_id=user)
+        participant.card_id = card_id
+        participant.save()
         refresh = RefreshToken.for_user(user)
         return Response(
             {"token": {'refresh': str(refresh), 'access': str(refresh.access_token)}, "user": serializer.data},

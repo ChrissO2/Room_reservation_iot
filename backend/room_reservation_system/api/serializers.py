@@ -7,6 +7,7 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
+
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name']
@@ -21,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', ''),
         )
         # Create the associated Participant
-        Participant.objects.create(
+        participant = Participant.objects.create(
             user=user,
             first_name=user.first_name,
             last_name=user.last_name,
