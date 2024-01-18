@@ -31,6 +31,7 @@ const CreateMeeting = (props) => {
       });
       setMessage("Zgłoszono spotkanie");
     } catch (e) {
+      console.log(e);
       setMessage("Niepowodzenie");
     }
   };
@@ -55,7 +56,7 @@ const CreateMeeting = (props) => {
             type="datetime-local"
             placeholder="Podaj godzinę początku spotkania"
             className="formInput"
-            onChange={setStartTime}
+            onChange={(e) => setStartTime(e.target.value)}
           />
         </FormGroup>
         <FormGroup className="formGroup">
@@ -64,12 +65,12 @@ const CreateMeeting = (props) => {
             type="datetime-local"
             placeholder="Podaj godzinę końca spotkania"
             className="formInput"
-            onChange={setEndTime}
+            onChange={(e) => setEndTime(e.target.value)}
           />
         </FormGroup>
         <FormGroup className="formGroup">
           <FormLabel>Numer pomieszczenia</FormLabel>
-          <Select onChange={setRoom}>
+          <Select onChange={(e) => setRoom(e.target.value)}>
             <option>Wybierz pomieszczenie</option>
             {rooms.map((room) => (
               <option>{room}</option>
