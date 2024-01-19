@@ -14,9 +14,10 @@ def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
         mqtt.client.subscribe('new_meeting')
-        thread = Thread(target=send_message_of_availability)
-        thread.daemon = True
-        thread.start()
+        # thread = Thread(target=send_message_of_availability)
+        # thread.daemon = True
+        # thread.start()
+        send_message_of_availability()
         print('Bad connection. Code:', rc)
 
 
