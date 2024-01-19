@@ -5,10 +5,6 @@ import axios from 'axios';
 
 const apiURL = 'http://62.171.156.180:8000/api/';
 
-const getMeetings = async () => {
-
-}
-
 const MeetingTable = ({meetings}) => {
     const [meetingList, setMeetingList] = useState([]);
 
