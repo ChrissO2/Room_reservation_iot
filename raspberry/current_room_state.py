@@ -4,9 +4,10 @@ import json
 import input_mode
 
 # The broker name or IP address.
-broker = "localhost"
+# broker = "localhost"
 # broker = "127.0.0.1"
 # broker = "10.0.0.1"
+BROKER = '62.171.156.180'
 
 # The MQTT client.
 
@@ -45,7 +46,7 @@ def connect_to_room_state_broker():
     client = mqtt.Client()
     messages = []
     # Connect to the broker.
-    client.connect(broker)
+    client.connect(BROKER)
     # Send message about conenction.
     client.on_message = process_update_of_current_state
     # Starts client and subscribe.
