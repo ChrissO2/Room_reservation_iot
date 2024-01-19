@@ -15,7 +15,8 @@ logging.basicConfig(filename='rfid_log.txt', level=logging.DEBUG)
 
 TERMINAL_ID = 'T0'
 # BROKER = 'localhost'
-BROKER = '10.108.33.127'
+# BROKER = '10.108.33.127'
+BROKER = '62.171.156.180'
 
 readRfidCards = {}
 client = mqtt.Client()
