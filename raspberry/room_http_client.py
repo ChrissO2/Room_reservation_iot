@@ -1,7 +1,7 @@
 import http.client
 import json
 
-BACKEND_IP = ""
+BACKEND_IP = "62.171.156.180"
 
 connection = http.client.HTTPConnection(BACKEND_IP, 80, timeout=10)
 
@@ -16,8 +16,8 @@ Httprequest to backend to check if room is free at given time
 def is_room_free_at(start_date, end_date):
     json_data = json.dumps(
         {
-            "start_time": start_date,
-            "end_time": end_date,
+            "start_time": start_date.time().isoformat(),
+            "end_time": end_date.time().isoformat(),
             "rfid_reader_id": DEFAULT_RFID_ID,
         }
     )
@@ -37,8 +37,8 @@ time by an organizer with given id
 def reserve_room(start_date, end_date, organizer_card_id):
     json_data = json.dumps(
         {
-            "start_date": start_date,
-            "end_date": end_date,
+            "start_date": start_date.time().isoformat(),
+            "end_date": end_date.time().isoformat(),
             "rfid_reader_id": DEFAULT_RFID_ID,
             "organizer_card_id": organizer_card_id,
         }
