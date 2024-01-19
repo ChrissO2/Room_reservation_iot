@@ -4,6 +4,8 @@ services:
     build: ./backend/room_reservation_system/
     ports:
       - "8000:8000"
+    volumes:
+      - database:/home/app/webapp/data
   frontend:
     container_name: iot-frontend
     build: ./frontend/
@@ -19,13 +21,14 @@ services:
       - ./.broker_config/:/mosquitto/config:rw
       - broker-data:/mosquitto/data:rw
       - broker-log:/mosquitto/log:rw
-    user: "1000:1000"
+    user: "1000:1002"
   broker-test-client:
     container_name: iot-broker-test-client
     image: eclipse-mosquitto
 volumes:
   broker-log:
   broker-data:
+  database:
 
 networks:
   default:
