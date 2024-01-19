@@ -1,3 +1,4 @@
+import datetime
 from textwrap import fill
 from PIL import Image, ImageDraw, ImageFont
 from config import *
@@ -25,8 +26,9 @@ import time
 """
 Global display parameters
 """
-old_parameters = {"is_free": True, "msg": 1000, "mode": "default"}
-parameters = {"is_free": True, "msg": 1000, "mode": "default"}
+started_time = datetime.datetime.now().strftime('%H:%M')
+old_parameters = {"is_free": True, "msg": started_time, "mode": "default"}
+parameters = {"is_free": True, "msg": started_time, "mode": "default"}
 last_update_time = time.time_ns() / 1000000
 
 """
