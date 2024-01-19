@@ -16,12 +16,12 @@ Httprequest to backend to check if room is free at given time
 def is_room_free_at(start_date, end_date):
     json_data = json.dumps(
         {
-            "start_time": start_date.time().isoformat(),
-            "end_time": end_date.time().isoformat(),
+            "start_time": start_date.isoformat(),
+            "end_time": end_date.isoformat(),
             "rfid_reader_id": DEFAULT_RFID_ID,
         }
     )
-    connection.request("GET", "/room_availability", json_data, DEFAULT_HEADERS)
+    connection.request("GET", "/api/room_availability_rfid", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     response_data = json.loads(response.read().decode())
     return response_data["is_free"]
@@ -35,15 +35,16 @@ time by an organizer with given id
 
 
 def reserve_room(start_date, end_date, organizer_card_id):
+    registered_uid = [str(elem) for elem in organizer_card_id]
+    str_uid = "".join(registered_uid)
     json_data = json.dumps(
         {
-            "start_date": start_date.time().isoformat(),
-            "end_date": end_date.time().isoformat(),
+            "start_date": start_date.isoformat(),
+            "end_date": end_date.isoformat(),
             "rfid_reader_id": DEFAULT_RFID_ID,
-            "organizer_card_id": organizer_card_id,
+            "organizer_card_id": str_uid,
         }
     )
-    connection.request("POST", "/new_meeting", json_data, DEFAULT_HEADERS)
+    connection.request("POST", "/api/new_meeting_rfid", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     response_data = json.loads(response.read().decode())
-    return response_data["is_free"]
