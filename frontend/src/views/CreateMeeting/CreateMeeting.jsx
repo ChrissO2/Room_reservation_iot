@@ -23,7 +23,10 @@ const CreateMeeting = (props) => {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    setRooms(getMeetingRooms(localStorage.getItem('token')));
+    getMeetingRooms(localStorage.getItem('token'))
+    .then(res => setRooms(res.data))
+    .catch(err => console.log(err));
+    setRooms();
   }, []);
 
   const handleSubmit = async (e) => {
