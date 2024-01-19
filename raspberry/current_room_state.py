@@ -30,6 +30,7 @@ def process_update_of_current_state(client, userdata, message):
     # Decode message.
     parameters = json.loads(str(message.payload.decode("utf-8")))
     if input_mode.MODE == "default":
+        print(message)
         oled.update_parameters(parameters)
 
     # Print message to console.
