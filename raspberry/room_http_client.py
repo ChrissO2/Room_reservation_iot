@@ -39,8 +39,8 @@ def reserve_room(start_date, end_date, organizer_card_id):
     str_uid = "".join(registered_uid)
     json_data = json.dumps(
         {
-            "start_date": start_date.isoformat(),
-            "end_date": end_date.isoformat(),
+            "start_time": start_date.isoformat(),
+            "end_time": end_date.isoformat(),
             "rfid_reader_id": DEFAULT_RFID_ID,
             "organizer_card_id": str_uid,
         }
