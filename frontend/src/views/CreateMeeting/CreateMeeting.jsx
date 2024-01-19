@@ -85,7 +85,7 @@ const CreateMeeting = (props) => {
           <Select onChange={(e) => setRoom(e.target.value)}>
             <option>Wybierz pomieszczenie</option>
             {rooms && rooms.map((room) => (
-              <option>{room}</option>
+              <option>{room.id}</option>
             ))}
           </Select>
         </FormGroup>
