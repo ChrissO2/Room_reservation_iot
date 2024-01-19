@@ -3,7 +3,7 @@ import json
 
 BACKEND_IP = "62.171.156.180"
 
-connection = http.client.HTTPConnection(BACKEND_IP, 80, timeout=10)
+connection = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
 
 DEFAULT_HEADERS = {"Content-type": "application/json"}
 DEFAULT_RFID_ID = 1
