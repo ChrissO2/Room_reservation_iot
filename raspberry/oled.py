@@ -26,7 +26,7 @@ import time
 """
 Global display parameters
 """
-started_time = datetime.datetime.now().strftime('%H:%M')
+started_time = datetime.datetime.now().strftime("%H:%M")
 old_parameters = {"is_free": True, "msg": started_time, "mode": "default"}
 parameters = {"is_free": True, "msg": started_time, "mode": "default"}
 last_update_time = time.time_ns() / 1000000
@@ -85,13 +85,6 @@ def handle_default_mode(parameters, disp):
     fontLarge = ImageFont.truetype("./lib/oled/Font.ttf", 20)
     fontSmall = ImageFont.truetype("./lib/oled/Font.ttf", 13)
 
-    image = (
-        Image.open("./assets/green_checkmark.png")
-        if is_room_free(parameters)
-        else Image.open("./assets/red_cross.png")
-    )
-    image = image.resize((15, 10))
-    image1.paste(image, (0, 0))
     draw.text((17, 0), str(parameters["msg"]), font=fontSmall, fill="RED")
 
     disp.ShowImage(image1, 0, 0)
@@ -108,8 +101,9 @@ def handle_input_mode(paramaters, disp):
     fontLarge = ImageFont.truetype("./lib/oled/Font.ttf", 20)
     fontSmall = ImageFont.truetype("./lib/oled/Font.ttf", 13)
 
-    draw.text((0, 0), "Ustaw spotkanie: ", font=fontSmall, fill="BLACK")
-    draw.text((17, 0), str(parameters["msg"]), font=fontSmall, fill="RED")
+    draw.text((5, 0), "Ustaw", font=fontSmall, fill="BLACK")
+    draw.text((5, 13), "spotkanie: ", font=fontSmall, fill="BLACK")
+    draw.text((22, 26), str(parameters["msg"]), font=fontLarge, fill="BLACK")
 
     disp.ShowImage(image1, 0, 0)
 
@@ -126,7 +120,7 @@ def handle_info_mode(parameters, disp):
     image1 = Image.new("RGB", (disp.width, disp.height), "WHITE")
     draw = ImageDraw.Draw(image1)
     draw.text((0, 0), str(msg), font=fontSmall, fill="BLACK")
-    disp.ShowImage(image1, 0,0)
+    disp.ShowImage(image1, 0, 0)
 
 
 """
