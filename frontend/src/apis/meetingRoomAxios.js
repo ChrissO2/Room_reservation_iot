@@ -24,7 +24,15 @@ export const login = (username, password) => {
 };
 
 export const getMeetingRooms = (token) => {
+  return MeetingRoomAxios(token).get("/api/rooms");
+};
+
+export const getMeetings = (token) => {
   return MeetingRoomAxios(token).get("/api/meetings");
+};
+
+export const getUpcomingMeetingRooms = (token) => {
+  return MeetingRoomAxios(token).get("/api/meetings/upcoming");
 };
 
 export const createMeeting = (token, meetingParamaters) => {

@@ -8,9 +8,10 @@ import { FormGroup, FormControl, FormLabel, Form } from "react-bootstrap";
 import { NewMeetingBannerContainer } from "./CreateMeeting.style";
 import { createMeeting } from "../../apis/meetingRoomAxios";
 import { useAuth } from "../../components/Auth/AuthProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Notification from "../../components/Notification/Notification";
-const rooms = [1, 2, 3, 4];
+import { getMeetingRooms } from "../../apis/meetingRoomAxios";
+// const rooms = [1, 2, 3, 4];
 
 const CreateMeeting = (props) => {
   const { token } = useAuth();
@@ -19,6 +20,11 @@ const CreateMeeting = (props) => {
   const [name, setName] = useState(null);
   const [room, setRoom] = useState(null);
   const [message, setMessage] = useState(null);
+  const [rooms, setRooms] = useState([]);
+
+  useEffect(() => {
+    setRooms(getMeetingRooms(localStorage.getItem('token')));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
