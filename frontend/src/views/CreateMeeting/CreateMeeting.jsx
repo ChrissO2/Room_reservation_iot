@@ -24,7 +24,10 @@ const CreateMeeting = (props) => {
 
   useEffect(() => {
     getMeetingRooms(localStorage.getItem('token'))
-    .then(res => setRooms(res.data))
+    .then(res => {
+      setRooms(res.data);
+      console.log(res.data);
+    })
     .catch(err => console.log(err));
     setRooms();
   }, []);
@@ -81,7 +84,7 @@ const CreateMeeting = (props) => {
           <FormLabel>Numer pomieszczenia</FormLabel>
           <Select onChange={(e) => setRoom(e.target.value)}>
             <option>Wybierz pomieszczenie</option>
-            {rooms.map((room) => (
+            {rooms && rooms.map((room) => (
               <option>{room}</option>
             ))}
           </Select>
