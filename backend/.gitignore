@@ -3,7 +3,7 @@
 *.pyc
 __pycache__
 /venv/
-/room_reservation_system/db.sqlite3
+/room_reservation_system/data/db.sqlite3
 /room_reservation_system/*/__pycache__
 /base/migrations/
 /iot/
