@@ -61,7 +61,7 @@ def has_state_changed(parameters, old_parameters):
 
 # Select which display to use based on the mode of the display.
 def display(disp, parameters, old_parameters):
-    if should_display_update() 
+    if should_display_update():
         if parameters["mode"] == "default":
             handle_default_mode(parameters, disp)
         elif parameters["mode"] == "input":

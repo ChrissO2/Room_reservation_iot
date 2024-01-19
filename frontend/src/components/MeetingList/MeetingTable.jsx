@@ -3,7 +3,7 @@ import MeetingItem from "./MeetingItem";
 import Table from 'react-bootstrap/Table';
 import axios from 'axios';
 
-const apiURL = 'http://localhost:8000/api/meetings/upcoming/';
+const apiURL = 'http://62.171.156.180:8000/api/';
 
 const getMeetings = async () => {
 
@@ -14,7 +14,7 @@ const MeetingTable = ({meetings}) => {
 
     useEffect(() => {
         axios
-        .get(apiURL + 'meetings/')
+        .get(apiURL + 'meetings/upcoming/')
         .then((res) => setMeetingList(res.data))
         .catch(err => {
             console.log(err);
