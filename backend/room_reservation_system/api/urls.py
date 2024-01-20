@@ -5,10 +5,10 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView, TokenVerifyView
 )
 
-
 urlpatterns = [
+    re_path('new_meeting_participant_rfid', views.meeting_participant_add_rfid),
     re_path('participant', views.participant),
-    path('meetings/<int:meeting_id>/', views.meeting),
+    path('meetings/<int:meeting_id>', views.meeting),
     re_path('new_meeting_rfid', views.meeting_add_rfid),
     re_path('new_meeting', views.meeting_add),
     re_path('meetings/upcoming/', views.upcoming_meetings),
@@ -23,3 +23,4 @@ urlpatterns = [
     re_path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     re_path('token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
+
