@@ -7,7 +7,6 @@ from rest_framework import serializers
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
-
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'password', 'first_name', 'last_name']
@@ -22,7 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
             last_name=validated_data.get('last_name', ''),
         )
         # Create the associated Participant
-        participant = Participant.objects.create(
+        Participant.objects.create(
             user=user,
             first_name=user.first_name,
             last_name=user.last_name,
@@ -50,9 +49,9 @@ class MeetingSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'start_time', 'end_time', 'organizer', 'room']
 
 
-
 class MeetingParticipantSerializer(serializers.ModelSerializer):
     participant = ParticipantSerializer(read_only=True)
+
     class Meta:
         model = MeetingParticipant
         fields = '__all__'
@@ -67,7 +66,7 @@ class MeetingParticipantSerializer(serializers.ModelSerializer):
         instance.enter_time = validated_data.get('enter_time', instance.enter_time)
         instance.save()
         return instance
-    
+
 
 class DetailMeetingSerializer(serializers.ModelSerializer):
     date = serializers.SerializerMethodField()
@@ -81,7 +80,7 @@ class DetailMeetingSerializer(serializers.ModelSerializer):
 
     def get_date(self, obj):
         return obj.start_time.strftime('%d.%m.%Y')
-    
+
     def get_start_time(self, obj):
         return obj.start_time.strftime('%H:%M')
 
