@@ -10,7 +10,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.timezone import make_aware
 
 from base.models import Participant, Meeting, MeetingParticipant, Room
-from api.service import check_room_availability, validate_room_and_time, validate_participant, validate_new_rfid_meeting
+from api.service import check_room_availability, validate_room_and_time, validate_participant, \
+    validate_new_rfid_meeting, add_meeting_participant
 from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer, \
     DetailMeetingSerializer, RoomSerializer
 
@@ -111,7 +112,7 @@ def meeting(request, meeting_id):
 @api_view(['GET'])
 def upcoming_meetings(request):
     now = make_aware(datetime.now())
-    meetings_list = Meeting.objects.filter(start_time__gt=now)
+    meetings_list = Meeting.objects.filter(start_time__gt=now).order_by('start_time')
     serializer = DetailMeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
 
@@ -120,7 +121,7 @@ def upcoming_meetings(request):
 def current_meetings(request):
     now = make_aware(datetime.now())
     meetings_list = Meeting.objects.filter(start_time__lte=now, end_time__gte=now)
-    serializer = MeetingSerializer(meetings_list, many=True)
+    serializer = DetailMeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
 
 
@@ -128,7 +129,7 @@ def current_meetings(request):
 def finished_meetings(request):
     now = make_aware(datetime.now())
     meetings_list = Meeting.objects.filter(end_time__lt=now)
-    serializer = MeetingSerializer(meetings_list, many=True)
+    serializer = DetailMeetingSerializer(meetings_list, many=True)
     return Response(serializer.data)
 
 
@@ -161,3 +162,21 @@ def room_availability_rfid(request):
     except ValueError as e:
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
     return Response({'is_free': room_available}, status=status.HTTP_200_OK)
+
+
+
+
+
+@api_view(['POST'])
+def meeting_participant_add_rfid(request):
+    card_id = request.data['card_id']
+    rfid_reader_id = request.data['rfid_reader_id']
+    entrance_time = request.data['time']
+
+    try:
+        meeting_participant = add_meeting_participant(card_id, rfid_reader_id, entrance_time)
+    except ValueError as e:
+        return Response({'e': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    serializer = MeetingParticipantSerializer(meeting_participant)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
