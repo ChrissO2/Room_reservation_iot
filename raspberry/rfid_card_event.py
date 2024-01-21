@@ -55,7 +55,7 @@ def interpret_rfid_read(callbacks):
 
             blinkLed(True)
             buzz(True)
-            send_event_to_broker(uid, global_activate_time, registered_uid)
+            # send_event_to_broker(uid, global_activate_time, registered_uid)
 
 
 """
