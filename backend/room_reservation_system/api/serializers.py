@@ -1,3 +1,4 @@
+from dataclasses import fields
 import datetime
 from base.models import Room, Meeting, MeetingParticipant, Participant
 from django.contrib.auth.models import User
@@ -88,4 +89,27 @@ class DetailMeetingSerializer(serializers.ModelSerializer):
         return obj.end_time.strftime('%H:%M')
 
     def get_organizer(self, obj):
+        return obj.organizer.first_name + ' ' + obj.organizer.last_name
+    
+
+class RoomReportSerializer(serializers.Serializer):
+    room_id = serializers.CharField(source='rfid_reader_id')
+    total_meetings = serializers.SerializerMethodField()
+
+    def get_total_meetings(self, room):
+        return Meeting.objects.filter(room=room).count()
+    
+
+class MeetingListLast30DaysSerializer(serializers.ModelSerializer):
+    participants = serializers.SerializerMethodField()
+    organizer_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Meeting
+        fields = ('id', 'room', 'start_time', 'end_time', 'participants', 'organizer_name')
+
+    def get_participants(self, meeting):
+        return Participant.objects.filter(meeting=meeting).count()
+    
+    def get_organizer_name(self, obj):
         return obj.organizer.first_name + ' ' + obj.organizer.last_name
