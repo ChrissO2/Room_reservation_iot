@@ -23,6 +23,7 @@ const AuthProvider = () => {
         if (!token) {
             navigate("/");
         }
+        setToken(token);
     }, [navigate, setToken, token]);
 
     return (
