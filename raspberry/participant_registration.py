@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # pylint: disable=no-member
-
+import json
 import logging
 from datetime import datetime, timedelta
 from xmlrpc.client import DateTime
@@ -9,6 +9,8 @@ import RPi.GPIO as GPIO
 from config import *  # pylint: disable=unused-wildcard-import
 from mfrc522 import MFRC522
 import paho.mqtt.client as mqtt
+import room_http_client
+import input_mode
 
 # Configure logging
 logging.basicConfig(filename="rfid_log.txt", level=logging.DEBUG)
@@ -23,13 +25,29 @@ client = mqtt.Client()
 PARTICIPANT_REGISTRATION_CHANNEL = "participant_registration"
 
 
-def call_worker(msg):
+def publish_registration(msg):
     client.publish(PARTICIPANT_REGISTRATION_CHANNEL, msg)
 
 
 def connect_to_broker():
     client.connect(BROKER)
-    call_worker("Client connected")
+
+
+def send_registration_event_to_broker(card_id):
+    if input_mode.MODE == "input":
+        return
+
+    str_card_id = "".join(card_id)
+    registration_details = json.dumps(
+        {
+            "rfid_reader_id": room_http_client.DEFAULT_RFID_ID,
+            "card_id": str_card_id,
+            "time": datetime.now().isoformat(),
+        }
+    )
+
+    publish_registration(registration_details)
+    logging.debug(registration_details)
 
 
 """
@@ -44,13 +62,3 @@ def initialize_mqtt_connection():
         logging.exception(e)
         print(e)
         GPIO.cleanup()
-
-
-# if __name__ == "__main__":
-#     try:
-#         connect_to_broker()
-#         read_loop()
-#     except Exception as e:
-#         logging.exception(e)
-#         print(e)
-#         GPIO.cleanup()
