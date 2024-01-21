@@ -31,7 +31,7 @@ export const getMeetings = (token) => {
   return MeetingRoomAxios(token).get("/api/meetings");
 };
 
-export const getUpcomingMeetingRooms = (token) => {
+export const getUpcomingMeetings = (token) => {
   return MeetingRoomAxios(token).get("/api/meetings/upcoming");
 };
 

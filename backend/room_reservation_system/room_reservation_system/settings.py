@@ -146,8 +146,8 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # TODO - set port server etc
-# MQTT_SERVER = 'broker.emqx.io'
-# MQTT_PORT = 1883
-# MQTT_KEEPALIVE = 60
-# MQTT_USER = ''
-# MQTT_PASSWORD = ''
+MQTT_SERVER = "62.171.156.180"
+MQTT_PORT = 1883
+MQTT_KEEPALIVE = 60
+MQTT_USER = ''
+MQTT_PASSWORD = ''

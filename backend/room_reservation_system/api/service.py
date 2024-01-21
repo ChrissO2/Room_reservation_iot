@@ -1,4 +1,4 @@
-from base.models import Meeting, Room, Participant
+from base.models import Meeting, Room, Participant, MeetingParticipant
 from datetime import datetime
 
 
@@ -61,3 +61,27 @@ def validate_new_rfid_meeting(start_time, end_time, organizer_card_id, rfid_read
     if not check_room_availability(room.id, start_time, end_time):
         raise ValueError('Room not available.')
     return start_time, end_time, organizer, room
+
+
+def add_meeting_participant(card_id, rfid_reader_id, entrance_time):
+    if not card_id or not rfid_reader_id or not entrance_time:
+        raise ValueError('Room does not exist.')
+
+    room = Room.objects.filter(rfid_reader_id=rfid_reader_id)
+    participant = Participant.objects.filter(card_id=card_id)
+    entrance_time = datetime.fromisoformat(entrance_time)
+    if not room.exists():
+        raise ValueError('Room does not exist.')
+    if not participant.exists():
+        raise ValueError('Participant does not exist.')
+
+    room = room.first()
+    participant = participant.first()
+
+    meeting = Meeting.objects.filter(room=room.id, start_time__lte=entrance_time, end_time__gt=entrance_time)
+    if not meeting.exists():
+        raise ValueError('There is no meeting in this room at that time')
+    meeting = meeting.first()
+
+    meeting_participant = MeetingParticipant.objects.create(meeting=meeting, participant=participant, enter_time=entrance_time)
+    return meeting_participant
