@@ -11,10 +11,11 @@ import { useAuth } from "../../components/Auth/AuthProvider";
 import { useState, useEffect } from "react";
 import Notification from "../../components/Notification/Notification";
 import { getMeetingRooms } from "../../apis/meetingRoomAxios";
+import { useOutletContext } from "react-router";
 // const rooms = [1, 2, 3, 4];
 
 const CreateMeeting = (props) => {
-  const { token } = useAuth();
+  const { token } = useOutletContext();
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [name, setName] = useState(null);
@@ -23,13 +24,12 @@ const CreateMeeting = (props) => {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
-    getMeetingRooms(localStorage.getItem('token'))
-    .then(res => {
-      setRooms(res.data);
-      console.log(res.data);
-    })
-    .catch(err => console.log(err));
-    setRooms();
+    getMeetingRooms(token)
+      .then((res) => {
+        setRooms(res.data);
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -58,6 +58,7 @@ const CreateMeeting = (props) => {
         <FormGroup className="formGroup">
           <FormLabel>Nazwa</FormLabel>
           <FormControl
+            onChange={(e) => setName(e.target.value)}
             placeholder="Podaj nazwę spotkania"
             className="formInput"
           />
@@ -84,9 +85,7 @@ const CreateMeeting = (props) => {
           <FormLabel>Numer pomieszczenia</FormLabel>
           <Select onChange={(e) => setRoom(e.target.value)}>
             <option>Wybierz pomieszczenie</option>
-            {rooms && rooms.map((room) => (
-              <option>{room.id}</option>
-            ))}
+            {rooms && rooms.map((room) => <option>{room.id}</option>)}
           </Select>
         </FormGroup>
         <ConfirmMeetingButton onClick={handleSubmit}>
