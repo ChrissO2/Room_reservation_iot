@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+*.sqlite3
 __pycache__
 /venv/
 /room_reservation_system/data/db.sqlite3
