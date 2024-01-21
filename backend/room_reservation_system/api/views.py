@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
@@ -13,7 +13,7 @@ from base.models import Participant, Meeting, MeetingParticipant, Room
 from api.service import check_room_availability, validate_room_and_time, validate_participant, \
     validate_new_rfid_meeting, add_meeting_participant
 from .serializers import UserSerializer, ParticipantSerializer, MeetingSerializer, MeetingParticipantSerializer, \
-    DetailMeetingSerializer, RoomSerializer
+    DetailMeetingSerializer, RoomSerializer, RoomReportSerializer, MeetingListLast30DaysSerializer
 
 
 @api_view(['POST'])
@@ -180,3 +180,24 @@ def meeting_participant_add_rfid(request):
 
     serializer = MeetingParticipantSerializer(meeting_participant)
     return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(['GET'])
+def room_report_view(request):
+    rooms = Room.objects.all()
+
+    room_data = []
+    for room in rooms:
+        room_serializer = RoomReportSerializer(room)
+        room_data.append(room_serializer.data)
+
+    return Response(room_data)
+
+
+@api_view(['GET'])
+def meetings_last_30_days_view(request):
+    thirty_days_ago = timezone.now() - timedelta(days=30)
+    meetings = Meeting.objects.filter(start_time__gte=thirty_days_ago)
+
+    serializer = MeetingListLast30DaysSerializer(meetings, many=True)
+    return Response(serializer.data)
