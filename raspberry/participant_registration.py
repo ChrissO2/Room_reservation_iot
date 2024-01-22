@@ -11,6 +11,7 @@ from mfrc522 import MFRC522
 import paho.mqtt.client as mqtt
 import room_http_client
 import input_mode
+import oled
 
 # Configure logging
 logging.basicConfig(filename="rfid_log.txt", level=logging.DEBUG)
@@ -47,6 +48,10 @@ def send_registration_event_to_broker(card_id):
     )
 
     publish_registration(registration_details)
+    oled.update_parameters(
+        {"mode": "default", "msg": "Zarejestrowano spotkania", "is_free": False}
+    )
+
     logging.debug(registration_details)
 
 
