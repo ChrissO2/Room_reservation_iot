@@ -84,8 +84,10 @@ def handle_default_mode(parameters, disp):
     draw = ImageDraw.Draw(image1)
     fontLarge = ImageFont.truetype("./lib/oled/Font.ttf", 20)
     fontSmall = ImageFont.truetype("./lib/oled/Font.ttf", 13)
-
-    draw.text((17, 0), str(parameters["msg"]), font=fontSmall, fill="RED")
+    messages = parameters["msg"].split(" ")
+    for id, message in enumerate(messages):
+        draw.text((17, id * 13), message, font=fontSmall, fill="RED")
+    # draw.text((17, 0), str(parameters["msg"]), font=fontSmall, fill="RED")
 
     disp.ShowImage(image1, 0, 0)
 
