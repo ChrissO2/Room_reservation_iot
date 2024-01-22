@@ -24,6 +24,7 @@ const InfoBars = () => {
                 {isAdminView() && (
                     <ViewLink to={"/create-meeting"}>Create Meeting</ViewLink>
                 )}
+                {isAdminView() && <ViewLink to={"/reports"}>Reports</ViewLink>}
                 {isAdminView() && <LogoutButton />}
             </StyledNavbar>
             <Outlet />

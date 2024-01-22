@@ -12,6 +12,7 @@ const MeetingTable = ({ meetings }) => {
                     <th>Room number</th>
                     <th>Name</th>
                     <th>Host</th>
+                    <th>Date</th>
                     <th>Start time</th>
                     <th>End time</th>
                 </tr>
