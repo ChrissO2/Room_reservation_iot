@@ -109,13 +109,25 @@ class RoomReportSerializer(serializers.Serializer):
 class MeetingListLast30DaysSerializer(serializers.ModelSerializer):
     participants = serializers.SerializerMethodField()
     organizer_name = serializers.SerializerMethodField()
+    date = serializers.SerializerMethodField()
+    start_time = serializers.SerializerMethodField()
+    end_time = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
-        fields = ('id', 'room', 'start_time', 'end_time', 'organizer_name', 'participants')
+        fields = ('id', 'room', 'start_time', 'end_time', 'organizer_name', 'participants', 'date')
 
     def get_participants(self, meeting):
         return MeetingParticipant.objects.filter(meeting=meeting).count()
 
     def get_organizer_name(self, obj):
         return obj.organizer.first_name + ' ' + obj.organizer.last_name
+    
+    def get_date(self, obj):
+        return obj.start_time.strftime('%d.%m.%Y')
+
+    def get_start_time(self, obj):
+        return obj.start_time.strftime('%H:%M')
+
+    def get_end_time(self, obj):
+        return obj.end_time.strftime('%H:%M')
