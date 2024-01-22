@@ -164,9 +164,6 @@ def room_availability_rfid(request):
     return Response({'is_free': room_available}, status=status.HTTP_200_OK)
 
 
-
-
-
 @api_view(['POST'])
 def meeting_participant_add_rfid(request):
     card_id = request.data['card_id']
