@@ -60,19 +60,21 @@ def add_participant_to_meeting():
     
 
 def connect_to_broker():
+    client_subscribe.connect(BROKER_IP)
     client.connect(BROKER_IP)
-    client.subscribe("participant_registration")
-    client.on_message = add_participant_to_meeting
-    client.loop_start()
+    client_subscribe.subscribe("participant_registration")
+    client_subscribe.on_message = add_participant_to_meeting
+    client_subscribe.loop_start()
 
 
 if __name__ == "__main__":
     client = mqtt.Client()
+    client_subscribe = mqtt.Client()
     try:
         connect_to_broker()
         while True:
             if datetime.now() - LAST_SEND >= SEND_TIMESTAMP:
-                LAST_SEND = datetime.now
+                LAST_SEND = datetime.now()
                 room_state()
     except Exception as e:
         print(e)
