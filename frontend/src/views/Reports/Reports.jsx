@@ -9,7 +9,7 @@ import { MainDiv, TableDiv } from "./Reports.styles";
 const Reports = () => {
     const [roomsData, setRoomsData] = useState([]);
     const [lastMeetings, setLastMeetings] = useState([]);
-    const { token } = useOutletContext();
+    const { token } = useAuth();
 
     useEffect(() => {
         getRoomsReport(token)
@@ -59,19 +59,18 @@ const Reports = () => {
                     <tbody>
                         {lastMeetings.map((meeting) => (
                             <tr>
-                                <td>{ meeting.room }</td>
-                                <td>{ meeting.date }</td>
-                                <td>{ meeting.start_time }</td>
-                                <td>{ meeting.end_time }</td>
-                                <td>{ meeting.organizer_name }</td>
-                                <td>{ meeting.participants }</td>
+                                <td>{meeting.room}</td>
+                                <td>{meeting.date}</td>
+                                <td>{meeting.start_time}</td>
+                                <td>{meeting.end_time}</td>
+                                <td>{meeting.organizer_name}</td>
+                                <td>{meeting.participants}</td>
                             </tr>
                         ))}
                     </tbody>
                 </Table>
             </TableDiv>
         </MainDiv>
-        
     );
 };
 

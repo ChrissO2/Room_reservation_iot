@@ -10,7 +10,7 @@ import { getUpcomingMeetings } from "../../apis/meetingRoomAxios";
 const MeetingList = () => {
     const navigate = useNavigate();
     const [meetings, setMeetings] = useState([]);
-    const { token } = useOutletContext();
+    const { token } = useAuth();
 
     useEffect(() => {
         getUpcomingMeetings(token)

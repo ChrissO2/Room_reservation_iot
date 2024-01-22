@@ -12,10 +12,9 @@ import { useState, useEffect } from "react";
 import Notification from "../../components/Notification/Notification";
 import { getMeetingRooms } from "../../apis/meetingRoomAxios";
 import { useOutletContext } from "react-router";
-// const rooms = [1, 2, 3, 4];
 
 const CreateMeeting = (props) => {
-  const { token } = useOutletContext();
+  const { token } = useAuth();
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [name, setName] = useState(null);
