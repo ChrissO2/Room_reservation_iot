@@ -70,6 +70,7 @@ def connect_to_broker():
 if __name__ == "__main__":
     client = mqtt.Client()
     client_subscribe = mqtt.Client()
+    global LAST_SEND
     try:
         connect_to_broker()
         while True:
