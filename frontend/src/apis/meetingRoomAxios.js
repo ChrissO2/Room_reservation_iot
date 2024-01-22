@@ -32,10 +32,18 @@ export const getMeetings = (token) => {
 };
 
 export const getUpcomingMeetings = (token) => {
-  return MeetingRoomAxios(token).get("/api/meetings/upcoming");
+  return MeetingRoomAxios(token).get("/api/meetings/upcoming/");
 };
 
 export const createMeeting = (token, meetingParamaters) => {
   // return true;
   return MeetingRoomAxios(token).post("/api/new_meeting", meetingParamaters);
 };
+
+export const getRoomsReport = (token) => {
+  return MeetingRoomAxios(token).get("api/rooms/report/");
+}
+
+export const getMeetingsReport = (token) => {
+  return MeetingRoomAxios(token).get("api/meetings/report/");
+}
