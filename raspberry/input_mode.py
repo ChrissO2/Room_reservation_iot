@@ -87,11 +87,15 @@ def reserve_room_from_input_mode(organizer_id):
     if is_free:
         room_http_client.reserve_room(datetime.now(), chosen_time, organizer_id)
         MODE = "default"
-        update_parameters({"is_free": True, "msg": "Wolna", "mode": "default"})
+        update_parameters(
+            {"is_free": False, "msg": "Sala zarezerwowana", "mode": "default"}
+        )
 
     else:
         MODE = "default"
-        update_parameters({"is_free": True, "msg": "Wolna", "mode": "default"})
+        update_parameters(
+            {"is_free": False, "msg": "Sala już zajęta", "mode": "default"}
+        )
 
 
 GPIO.add_event_detect(
@@ -110,6 +114,7 @@ def set_hour():
     Function called when entering input mode. Selects new start_time and updates oled.
     """
     global MODE
+    global chosen_time
     start_time = datetime.now()
     chosen_time = start_time
     update_parameters(
