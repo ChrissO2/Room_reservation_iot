@@ -196,7 +196,7 @@ def room_report_view(request):
 
 @api_view(['GET'])
 def meetings_last_30_days_view(request):
-    thirty_days_ago = timezone.now() - timedelta(days=30)
+    thirty_days_ago = datetime.now() - timedelta(days=30)
     meetings = Meeting.objects.filter(start_time__gte=thirty_days_ago)
 
     serializer = MeetingListLast30DaysSerializer(meetings, many=True)
