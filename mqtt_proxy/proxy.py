@@ -1,5 +1,5 @@
 import http.client
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import sleep
 
 import paho.mqtt.client as mqtt
@@ -29,11 +29,13 @@ def is_room_free_at(start_date, end_date):
     response = connection.getresponse()
     print(response)
     response_data = json.loads(response.read().decode())
-    return response_data["is_free"]
+    print(response_data)
+    return response_data.get('is_free')
 
 
 def room_state():
-    room_available = is_room_free_at(datetime.now().isoformat(), datetime.now().isoformat())
+    current_time = datetime.now()
+    room_available = is_room_free_at(datetime.now().isoformat(), (datetime.now() + timedelta(seconds=5)).isoformat())
     payload = {
         "is_free": room_available,
         "msg": "wolne" if room_available else "zajete",
@@ -55,8 +57,8 @@ def add_participant_to_meeting():
         }
     )
     connection.request("POST", "/api/new_meeting_participant_rfid", json_data, DEFAULT_HEADERS)
-    response = connection.getresponse()
-    print(response)
+    # response = connection.getresponse()
+    # print(response)
     
 
 def connect_to_broker():
@@ -70,12 +72,10 @@ def connect_to_broker():
 if __name__ == "__main__":
     client = mqtt.Client()
     client_subscribe = mqtt.Client()
-    global LAST_SEND
     try:
         connect_to_broker()
         while True:
-            if datetime.now() - LAST_SEND >= SEND_TIMESTAMP:
-                LAST_SEND = datetime.now()
-                room_state()
+            room_state()
+            sleep(5)
     except Exception as e:
-        print(e)
+        print(e.with_traceback())
