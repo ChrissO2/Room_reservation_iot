@@ -38,6 +38,12 @@ class ParticipantSerializer(serializers.ModelSerializer):
         fields = ['user', 'first_name', 'last_name', 'card_id']
 
 
+class ParticipantNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Participant
+        fields = ['first_name', 'last_name']
+
+
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
@@ -73,11 +79,11 @@ class DetailMeetingSerializer(serializers.ModelSerializer):
     date = serializers.SerializerMethodField()
     start_time = serializers.SerializerMethodField()
     end_time = serializers.SerializerMethodField()
-    organizer = serializers.SerializerMethodField()
+    organizer_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
-        fields = ['id', 'name', 'start_time', 'end_time', 'organizer', 'room', 'date']
+        fields = ['id', 'name', 'start_time', 'end_time', 'organizer', 'organizer_name', 'room', 'date']
 
     def get_date(self, obj):
         return obj.start_time.strftime('%d.%m.%Y')
@@ -88,7 +94,7 @@ class DetailMeetingSerializer(serializers.ModelSerializer):
     def get_end_time(self, obj):
         return obj.end_time.strftime('%H:%M')
 
-    def get_organizer(self, obj):
+    def get_organizer_name(self, obj):
         return obj.organizer.first_name + ' ' + obj.organizer.last_name
     
 
@@ -106,10 +112,10 @@ class MeetingListLast30DaysSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meeting
-        fields = ('id', 'room', 'start_time', 'end_time', 'participants', 'organizer_name')
+        fields = ('id', 'room', 'start_time', 'end_time', 'organizer_name', 'participants')
 
     def get_participants(self, meeting):
-        return Participant.objects.filter(meeting=meeting).count()
-    
+        return MeetingParticipant.objects.filter(meeting=meeting).count()
+
     def get_organizer_name(self, obj):
         return obj.organizer.first_name + ' ' + obj.organizer.last_name
