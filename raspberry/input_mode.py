@@ -42,9 +42,9 @@ def handle_encoder_left(channel):
 
     prev_time = chosen_time
     right = GPIO.input(encoderRight)
-    if not right:
+    if not right and (chosen_time + timedelta(minutes=5)).hour > 0:
         chosen_time += INTERVAL
-    elif right:
+    elif right and chosen_time.time() > datetime.now().time():
         chosen_time -= INTERVAL
 
     if prev_time != chosen_time:
