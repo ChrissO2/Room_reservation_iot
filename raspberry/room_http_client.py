@@ -24,6 +24,10 @@ def is_room_free_at(start_date, end_date):
     connection.request("GET", "/api/room_availability_rfid", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     response_data = json.loads(response.read().decode())
+    try:
+        return response_data["is_free"]
+    except KeyError:
+        return False
     return response_data["is_free"]
 
 
