@@ -11,13 +11,12 @@ BROKER_IP = "62.171.156.180"
 LAST_SEND = 0
 SEND_TIMESTAMP = 10
 
-connection = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
-
 DEFAULT_HEADERS = {"Content-type": "application/json"}
 DEFAULT_RFID_ID = 1
 
 
 def is_room_free_at(start_date, end_date):
+    connection = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
     json_data = json.dumps(
         {
             "start_time": start_date,
@@ -44,8 +43,8 @@ def room_state():
     client.publish("room_state", json.dumps(payload))
 
 
-def add_participant_to_meeting():
-    parameters = json.message.payload.decode("utf-8")
+def add_participant_to_meeting(client, userdata, message):
+    parameters = json.loads(str(message.payload.decode("utf-8")))
     rfid = parameters["rfid_reader_id"]
     card_id = parameters["card_id"]
     time_registration = parameters["time"]
@@ -53,12 +52,15 @@ def add_participant_to_meeting():
         {
             "rfid_card_id": rfid,
             "card_id": card_id,
-            "time": time_registration,
+            "time": time_registration
         }
     )
-    connection.request("POST", "/api/new_meeting_participant_rfid", json_data, DEFAULT_HEADERS)
-    # response = connection.getresponse()
-    # print(response)
+    connection_participant = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
+    connection_participant.request("POST", "/api/new_meeting_participant_rfid", json_data, DEFAULT_HEADERS)
+    response = connection_participant.getresponse()
+    print(response)
+    response_data = json.loads(response.read().decode())
+    print(response_data)
     
 
 def connect_to_broker():
