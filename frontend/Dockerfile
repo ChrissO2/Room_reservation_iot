@@ -21,8 +21,7 @@ FROM nginx:alpine
 
 # Copy the built React app to Nginx's web server directory
 COPY --from=build /app/build /usr/share/nginx/html
-COPY ./.nginx/nginx.conf /etc/nginx/conf.d/default.conf
-
+COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
 # Expose port 3000 for the Nginx server
 EXPOSE 3000
 
