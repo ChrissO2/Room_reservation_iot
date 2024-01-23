@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import InfoBars from "../components/InfoBars/InfoBars";
-import AuthProvider from "../components/Auth/AuthProvider";
+import AuthProvider, { PrivateRoute } from "../components/Auth/AuthProvider";
 import Login from "../views/Login/Login";
 import { ViewTypeProvider } from "../components/ViewType/ViewTypeProvider";
 import MeetingList from "../views/MeetingList/MeetingList";
@@ -9,20 +9,22 @@ import Reports from "../views/Reports/Reports";
 
 const RouterComponent = () => {
   return (
-    <Router>
-      <ViewTypeProvider>
-        <Routes>
-          <Route path="/" element={<InfoBars />}>
-            <Route path="/" element={<AuthProvider />}>
+    <AuthProvider>
+      <Router>
+        <ViewTypeProvider>
+          <Routes>
+            <Route element={<InfoBars />}>
               <Route path="/" element={<Login />} />
-              <Route path="/meetings" element={<MeetingList />} />
-              <Route path="/create-meeting" element={<CreateMeeting />} />
-              <Route path="/reports" element={<Reports />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/meetings" element={<MeetingList />} />
+                <Route path="/create-meeting" element={<CreateMeeting />} />
+                <Route path="/reports" element={<Reports />} />
+              </Route>
             </Route>
-          </Route>
-        </Routes>
-      </ViewTypeProvider>
-    </Router>
+          </Routes>
+        </ViewTypeProvider>
+      </Router>
+    </AuthProvider>
   );
 };
 export default RouterComponent;
