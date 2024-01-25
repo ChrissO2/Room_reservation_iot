@@ -9,7 +9,7 @@ import RPi.GPIO as GPIO
 from config import *  # pylint: disable=unused-wildcard-import
 from mfrc522 import MFRC522
 import paho.mqtt.client as mqtt
-from raspberry.mqtt_tls import secure_mqtt_client
+from mqtt_tls import secure_mqtt_client
 import room_http_client
 import input_mode
 import oled
