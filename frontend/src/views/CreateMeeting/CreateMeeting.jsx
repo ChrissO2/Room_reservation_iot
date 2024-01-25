@@ -43,8 +43,22 @@ const CreateMeeting = (props) => {
       });
       setMessage("Zgłoszono spotkanie");
     } catch (e) {
-      console.log(e);
-      setMessage("Niepowodzenie");
+      console.log('responsee', e.response);
+      if (e.response && e.response.status) {
+        const statusCode = e.response.status;
+        if (statusCode === 400) {
+          setMessage('Źle wypełniony formularz');
+        }
+        else if (statusCode === 409) {
+          setMessage('Sala jest zajęta w tym terminie');
+        }
+        else if(statusCode === 401) {
+          setMessage('Błąd uwierzytelniania, spróbuj się zalogować jeszcze raz');
+        }
+      } else {
+        setMessage("Niepowodzenie");
+      }
+      
     }
   };
 
