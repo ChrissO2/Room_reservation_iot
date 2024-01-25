@@ -15,6 +15,10 @@ BROKER_IP = "meeting-system.rolo-labs.xyz"
 BACKEND_IP = (
     os.getenv("BACKEND_IP") if os.getenv("BACKEND_IP") is not None else "62.171.156.180"
 )
+
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
+
 print(BACKEND_IP)
 
 LAST_SEND = 0
@@ -96,7 +100,12 @@ def set_tls(client):
         ca_certs=server_cert_path,
         tls_version=ssl.PROTOCOL_TLSv1_2,
     )
+    authenticate_client(client)
     return client
+
+
+def authenticate_client(client):
+    client.username_pw_set(USERNAME, password=PASSWORD)
 
 
 if __name__ == "__main__":
