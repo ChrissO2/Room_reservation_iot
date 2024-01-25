@@ -100,7 +100,6 @@ def set_tls(client):
         ca_certs=server_cert_path,
         tls_version=ssl.PROTOCOL_TLSv1_2,
     )
-    authenticate_client(client)
     return client
 
 
@@ -108,14 +107,19 @@ def authenticate_client(client):
     client.username_pw_set(USERNAME, password=PASSWORD)
 
 
+def secure_mqtt_client(client):
+    set_tls(client)
+    authenticate_client(client)
+
+
 if __name__ == "__main__":
     sleep(5)
     client = mqtt.Client()
     client_subscribe = mqtt.Client()
     client_debug = mqtt.Client()
-    set_tls(client)
-    set_tls(client_subscribe)
-    set_tls(client_debug)
+    secure_mqtt_client(client)
+    secure_mqtt_client(client_subscribe)
+    secure_mqtt_client(client_debug)
     try:
         connect_to_broker()
         while True:

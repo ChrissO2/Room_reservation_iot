@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import oled
 import json
 import input_mode
-from mqtt_tls import set_tls
+from mqtt_tls import secure_mqtt_client
 
 # The broker name or IP address.
 # broker = "localhost"
@@ -47,7 +47,7 @@ def process_update_of_current_state(client, userdata, message):
 
 def connect_to_room_state_broker():
     client = mqtt.Client()
-    set_tls(client)
+    secure_mqtt_client(client)
     messages = []
     # Connect to the broker.
     client.connect(BROKER, 8883)
