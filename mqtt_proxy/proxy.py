@@ -62,7 +62,7 @@ def add_participant_to_meeting(client, userdata, message):
     card_id = parameters["card_id"]
     time_registration = parameters["time"]
     json_data = json.dumps(
-        {"rfid_card_id": rfid, "card_id": card_id, "time": time_registration}
+        {"rfid_card_id": str(rfid), "card_id": str(card_id), "time": time_registration}
     )
     connection_participant = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
     connection_participant.request(
@@ -107,7 +107,6 @@ if __name__ == "__main__":
     set_tls(client)
     set_tls(client_subscribe)
     set_tls(client_debug)
-
     try:
         connect_to_broker()
         while True:
