@@ -33,7 +33,7 @@ def publish_registration(msg):
 
 def connect_to_broker():
     set_tls(client)
-    client.connect(BROKER)
+    client.connect(BROKER, 8883)
 
 
 def send_registration_event_to_broker(card_id):

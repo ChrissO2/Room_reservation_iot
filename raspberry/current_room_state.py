@@ -50,7 +50,7 @@ def connect_to_room_state_broker():
     set_tls(client)
     messages = []
     # Connect to the broker.
-    client.connect(BROKER)
+    client.connect(BROKER, 8883)
     # Send message about conenction.
     client.on_message = process_update_of_current_state
     # Starts client and subscribe.

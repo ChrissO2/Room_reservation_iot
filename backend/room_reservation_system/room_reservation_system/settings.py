@@ -99,7 +99,7 @@ WSGI_APPLICATION = "room_reservation_system.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "data/db.sqlite3",
     }
 }
 
@@ -149,5 +149,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MQTT_SERVER = "62.171.156.180"
 MQTT_PORT = 1883
 MQTT_KEEPALIVE = 60
-MQTT_USER = ''
-MQTT_PASSWORD = ''
+MQTT_USER = ""
+MQTT_PASSWORD = ""

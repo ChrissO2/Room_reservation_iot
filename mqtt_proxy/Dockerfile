@@ -18,7 +18,7 @@ RUN apt update && apt install --reinstall ca-certificates
 
 # copy whole project to your docker home directory. 
 COPY . $DockerHOME
-COPY .certs/ISRG_Root_X1.pem $DockerHOME
+COPY .certs $DockerHOME
 # run this command to install all dependencies  
 RUN pip install -r requirements.txt  
 
