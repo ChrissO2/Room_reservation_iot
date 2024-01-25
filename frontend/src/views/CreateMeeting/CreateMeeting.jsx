@@ -43,7 +43,7 @@ const CreateMeeting = (props) => {
       });
       setMessage("Zgłoszono spotkanie");
     } catch (e) {
-      console.log('responsee', e.response);
+      console.log(e);
       if (e.response && e.response.status) {
         const statusCode = e.response.status;
         if (statusCode === 400) {
