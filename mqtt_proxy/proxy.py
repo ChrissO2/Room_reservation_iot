@@ -39,6 +39,7 @@ def is_room_free_at(start_date, end_date):
             "rfid_reader_id": str(DEFAULT_RFID_ID),
         }
     )
+    print(json_data)
     connection.request("GET", "/api/room_availability_rfid", json_data, DEFAULT_HEADERS)
     response = connection.getresponse()
     print(response)
@@ -50,7 +51,8 @@ def is_room_free_at(start_date, end_date):
 def room_state():
     current_time = datetime.now()
     room_available = is_room_free_at(
-        datetime.now().isoformat(), (datetime.now() + timedelta(seconds=5)).isoformat()
+        (datetime.now() + timedelta(hours=1)).isoformat(),
+        (datetime.now() + timedelta(seconds=5, hours=1)).isoformat(),
     )
     payload = {
         "is_free": room_available,
