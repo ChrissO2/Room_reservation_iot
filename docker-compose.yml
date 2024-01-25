@@ -35,7 +35,7 @@ services:
     networks:
       rolo_net:
         aliases:
-          - meeting.system.rolo-labs.xyz
+          - meeting-system.rolo-labs.xyz
   broker-test-client:
     container_name: iot-broker-test-client
     image: eclipse-mosquitto
