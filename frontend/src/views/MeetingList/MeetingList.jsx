@@ -5,16 +5,21 @@ import MeetingTable from "../../components/MeetingList/MeetingTable";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../components/Auth/AuthProvider";
-import { getUpcomingMeetings } from "../../apis/meetingRoomAxios";
+import { getUpcomingMeetings, getCurrentMeetings } from "../../apis/meetingRoomAxios";
 
 const MeetingList = () => {
     const navigate = useNavigate();
-    const [meetings, setMeetings] = useState([]);
+    const [upcomingMeetings, setUpcomingMeetings] = useState([]);
+    const [currentMeetings, setCurrentMeetings] = useState([]);
     const { token } = useAuth();
 
     useEffect(() => {
         getUpcomingMeetings(token)
-            .then((res) => setMeetings(res.data))
+            .then((res) => {setUpcomingMeetings(res.data)
+            console.log(res.data)})
+            .catch((err) => console.log(err));
+        getCurrentMeetings(token)
+            .then((res) => setCurrentMeetings(res.data))
             .catch((err) => console.log(err));
     }, []);
 
@@ -24,10 +29,14 @@ const MeetingList = () => {
 
     return (
         <MainDiv>
-            <TableHeader>Upcoming meetings</TableHeader>
-            <MeetingTable meetings={meetings}></MeetingTable>
+            <TableHeader>Obecne spotkania</TableHeader>
+            <MeetingTable meetings={currentMeetings} />
+
+            <TableHeader>Nadchodzące spotkania</TableHeader>
+            <MeetingTable meetings={upcomingMeetings}></MeetingTable>
+
             <CreateButton variant="success" onClick={onCreateClick}>
-                Create meeting
+                Utwórz spotkanie
             </CreateButton>
         </MainDiv>
     );

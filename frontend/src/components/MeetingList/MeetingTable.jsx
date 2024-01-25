@@ -9,12 +9,12 @@ const MeetingTable = ({ meetings }) => {
         <Table striped bordered hover variant="dark" responsive>
             <thead>
                 <tr>
-                    <th>Room number</th>
-                    <th>Name</th>
-                    <th>Host</th>
-                    <th>Date</th>
-                    <th>Start time</th>
-                    <th>End time</th>
+                    <th>Nr pokoju</th>
+                    <th>Nazwa spotkania</th>
+                    <th>Prowadzący</th>
+                    <th>Data</th>
+                    <th>Godzina rozpoczęcia</th>
+                    <th>Godzina zakończenia</th>
                 </tr>
             </thead>
             <tbody>
