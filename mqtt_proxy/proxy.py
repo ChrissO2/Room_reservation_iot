@@ -5,7 +5,8 @@ import ssl
 import paho.mqtt.client as mqtt
 import json
 
-BACKEND_IP = "62.171.156.180"
+# BACKEND_IP = "62.171.156.180"
+BACKEND_IP = "iot-backend"
 BROKER_IP = "meeting-system.rolo-labs.xyz"
 
 LAST_SEND = 0
