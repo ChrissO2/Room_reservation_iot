@@ -6,6 +6,9 @@ services:
       - "8000:8000"
     volumes:
       - database:/home/app/webapp/data
+  mqtt-proxy:
+    container_name: mqtt-proxy
+    build: ./mqtt_proxy/
   frontend:
     container_name: iot-frontend
     build: ./frontend/
@@ -15,13 +18,13 @@ services:
     container_name: iot-broker
     image: eclipse-mosquitto
     ports:
-      - "1883:1883" #default mqtt port
+      - "8883:8883" #MQTT over SSL
       - "9001:9001" #default mqtt port for websockets
     volumes:
+      - ./.certs:/mosquitto/ca_certs
       - ./.broker_config/:/mosquitto/config:rw
       - broker-data:/mosquitto/data:rw
       - broker-log:/mosquitto/log:rw
-    user: "1000:1002"
   broker-test-client:
     container_name: iot-broker-test-client
     image: eclipse-mosquitto
