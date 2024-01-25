@@ -9,6 +9,7 @@ import RPi.GPIO as GPIO
 from config import *  # pylint: disable=unused-wildcard-import
 from mfrc522 import MFRC522
 import paho.mqtt.client as mqtt
+from raspberry.mqtt_tls import set_tls
 import room_http_client
 import input_mode
 import oled
@@ -19,7 +20,7 @@ logging.basicConfig(filename="rfid_log.txt", level=logging.DEBUG)
 TERMINAL_ID = "T0"
 # BROKER = 'localhost'
 # BROKER = '10.108.33.127'
-BROKER = "62.171.156.180"
+BROKER = "meeting-system.rolo-labs.xyz"
 
 readRfidCards = {}
 client = mqtt.Client()
@@ -31,6 +32,7 @@ def publish_registration(msg):
 
 
 def connect_to_broker():
+    set_tls(client)
     client.connect(BROKER)
 
 

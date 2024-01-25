@@ -23,7 +23,7 @@ SEND_TIMESTAMP = 10
 DEFAULT_HEADERS = {"Content-type": "application/json"}
 DEFAULT_RFID_ID = 1
 
-server_cert_path = "/home/app/webapp/ISRG_Root_X1.pem"
+server_cert_path = "./ISRG_Root_X1.pem"
 
 
 def is_room_free_at(start_date, end_date):
