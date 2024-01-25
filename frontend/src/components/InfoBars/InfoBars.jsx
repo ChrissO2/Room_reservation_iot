@@ -20,11 +20,11 @@ const InfoBars = () => {
         <PageContainer>
             <StyledNavbar>
                 {/* <ViewLink to={'/'}>Home</ViewLink> */}
-                {isAdminView() && <ViewLink to={"/meetings"}>Meetings</ViewLink>}
+                {isAdminView() && <ViewLink to={"/meetings"}>Lista spotkań</ViewLink>}
                 {isAdminView() && (
-                    <ViewLink to={"/create-meeting"}>Create Meeting</ViewLink>
+                    <ViewLink to={"/create-meeting"}>Utwórz spotkanie</ViewLink>
                 )}
-                {isAdminView() && <ViewLink to={"/reports"}>Reports</ViewLink>}
+                {isAdminView() && <ViewLink to={"/reports"}>Raporty</ViewLink>}
                 {isAdminView() && <LogoutButton />}
             </StyledNavbar>
             <Outlet />

@@ -55,10 +55,10 @@ export const Login = () => {
     <>
       <Notification message={loginError} setMessage={setLoginError} />
       <FormContainer>
-        <BannerContainer>Meeting Room System</BannerContainer>
+        <BannerContainer>System rezerwacji sal</BannerContainer>
         <Form className="form">
           <FormGroup className="formGroup">
-            <FormLabel>Username</FormLabel>
+            <FormLabel>Nazwa użytkownika</FormLabel>
             <FormControl
               placeholder="Enter password"
               className="formInput"
@@ -66,7 +66,7 @@ export const Login = () => {
             />
           </FormGroup>
           <FormGroup className="formGroup">
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Hasło</FormLabel>
             <FormControl
               type="password"
               placeholder="Confirm password"
@@ -75,7 +75,7 @@ export const Login = () => {
             />
           </FormGroup>
 
-          <ConfirmButton onClick={handleSubmit}>Confirm</ConfirmButton>
+          <ConfirmButton onClick={handleSubmit}>Zaloguj</ConfirmButton>
           {isWaiting && <LoadingAnimation />}
         </Form>
       </FormContainer>
