@@ -32,7 +32,7 @@ def is_room_free_at(start_date, end_date):
         {
             "start_time": start_date,
             "end_time": end_date,
-            "rfid_reader_id": DEFAULT_RFID_ID,
+            "rfid_reader_id": str(DEFAULT_RFID_ID),
         }
     )
     connection.request("GET", "/api/room_availability_rfid", json_data, DEFAULT_HEADERS)
@@ -77,9 +77,18 @@ def add_participant_to_meeting(client, userdata, message):
 def connect_to_broker():
     client_subscribe.connect(BROKER_IP, 8883)
     client.connect(BROKER_IP, 8883)
+    client_debug.connect(BROKER_IP, 8883)
     client_subscribe.subscribe("participant_registration")
     client_subscribe.on_message = add_participant_to_meeting
     client_subscribe.loop_start()
+    client_debug.subscribe("room_state")
+    client_debug.on_message = listen_on_room_state
+    client_debug.loop_start()
+
+
+def listen_on_room_state(client, userdata, message):
+    parsed_message = json.loads(str(message.payload.decode("utf-8")))
+    print("Channel room_state data: {}".format(parsed_message))
 
 
 def set_tls(client):
@@ -94,8 +103,10 @@ if __name__ == "__main__":
     sleep(5)
     client = mqtt.Client()
     client_subscribe = mqtt.Client()
+    client_debug = mqtt.Client()
     set_tls(client)
     set_tls(client_subscribe)
+    set_tls(client_debug)
 
     try:
         connect_to_broker()
