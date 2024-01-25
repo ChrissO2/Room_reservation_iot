@@ -4,10 +4,18 @@ from time import sleep
 import ssl
 import paho.mqtt.client as mqtt
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # BACKEND_IP = "62.171.156.180"
-BACKEND_IP = "iot-backend"
+# BACKEND_IP = "iot-backend"
 BROKER_IP = "meeting-system.rolo-labs.xyz"
+BACKEND_IP = (
+    os.getenv("BACKEND_IP") if os.getenv("BACKEND_IP") is not None else "62.171.156.180"
+)
+print(BACKEND_IP)
 
 LAST_SEND = 0
 SEND_TIMESTAMP = 10
