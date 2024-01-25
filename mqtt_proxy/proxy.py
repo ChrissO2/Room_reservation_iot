@@ -66,7 +66,11 @@ def add_participant_to_meeting(client, userdata, message):
     card_id = parameters["card_id"]
     time_registration = parameters["time"]
     json_data = json.dumps(
-        {"rfid_card_id": str(rfid), "card_id": str(card_id), "time": time_registration}
+        {
+            "rfid_reader_id": str(rfid),
+            "card_id": str(card_id),
+            "time": time_registration,
+        }
     )
     connection_participant = http.client.HTTPConnection(BACKEND_IP, 8000, timeout=10)
     connection_participant.request(
@@ -74,8 +78,8 @@ def add_participant_to_meeting(client, userdata, message):
     )
     response = connection_participant.getresponse()
     print(response)
-    response_data = json.loads(response.read().decode())
-    print(response_data)
+    # response_data = json.loads(response.read().decode())
+    # print(response_data)
 
 
 def connect_to_broker():
