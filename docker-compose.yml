@@ -6,22 +6,36 @@ services:
       - "8000:8000"
     volumes:
       - database:/home/app/webapp/data
+    networks:
+      - rolo_net
+  mqtt-proxy:
+    container_name: mqtt-proxy
+    build: ./mqtt_proxy/
+    depends_on:
+      - backend
+      - broker
+    networks:
+      - rolo_net
   frontend:
     container_name: iot-frontend
     build: ./frontend/
     ports:
-      - "3000:80"
+      - "3000:3000"
   broker:
     container_name: iot-broker
     image: eclipse-mosquitto
     ports:
-      - "1883:1883" #default mqtt port
+      - "8883:8883" #MQTT over SSL
       - "9001:9001" #default mqtt port for websockets
     volumes:
+      - ./.broker_config/ca_certs:/mosquitto/ca_certs
       - ./.broker_config/:/mosquitto/config:rw
       - broker-data:/mosquitto/data:rw
       - broker-log:/mosquitto/log:rw
-    user: "1000:1002"
+    networks:
+      rolo_net:
+        aliases:
+          - meeting-system.rolo-labs.xyz
   broker-test-client:
     container_name: iot-broker-test-client
     image: eclipse-mosquitto
@@ -31,4 +45,4 @@ volumes:
   database:
 
 networks:
-  default:
+  rolo_net:

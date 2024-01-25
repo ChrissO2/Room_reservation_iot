@@ -23,6 +23,7 @@ const CreateMeeting = (props) => {
   const [rooms, setRooms] = useState([]);
 
   useEffect(() => {
+    // debugger;
     getMeetingRooms(token)
       .then((res) => {
         setRooms(res.data);

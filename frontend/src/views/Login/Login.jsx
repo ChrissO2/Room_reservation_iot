@@ -10,9 +10,10 @@ import meetingAxios, {
   login,
   MeetingRoomAxios,
 } from "../../apis/meetingRoomAxios.js";
+import { useAuth } from "../../components/Auth/AuthProvider";
 
 export const Login = () => {
-  const { token, setToken } = useOutletContext();
+  const { token, setToken } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
