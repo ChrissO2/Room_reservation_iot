@@ -91,6 +91,7 @@ def set_tls(client):
 
 
 if __name__ == "__main__":
+    sleep(5)
     client = mqtt.Client()
     client_subscribe = mqtt.Client()
     set_tls(client)
