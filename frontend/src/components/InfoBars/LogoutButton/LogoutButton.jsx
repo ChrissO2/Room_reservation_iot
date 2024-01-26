@@ -8,7 +8,7 @@ const LogoutButton = () => {
     return (
         <LogoutButtonWrapper>
             <ViewLink to={'/'} onClick={handleLogout}>
-                Wyloguj
+                Logout
             </ViewLink>
         </LogoutButtonWrapper>
     );

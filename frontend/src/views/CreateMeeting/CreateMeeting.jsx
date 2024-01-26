@@ -47,16 +47,16 @@ const CreateMeeting = (props) => {
       if (e.response && e.response.status) {
         const statusCode = e.response.status;
         if (statusCode === 400) {
-          setMessage('Źle wypełniony formularz');
+          setMessage('Invalid data');
         }
         else if (statusCode === 409) {
-          setMessage('Sala jest zajęta w tym terminie');
+          setMessage('Room is taken in given time');
         }
         else if(statusCode === 401) {
-          setMessage('Błąd uwierzytelniania, spróbuj się zalogować jeszcze raz');
+          setMessage('Authorization error. Try to login again');
         }
       } else {
-        setMessage("Niepowodzenie");
+        setMessage("Error");
       }
       
     }
@@ -66,11 +66,11 @@ const CreateMeeting = (props) => {
     <CreateMeetingPageCointainer>
       <Notification message={message} setMessage={setMessage} />
       <NewMeetingBannerContainer>
-        Stwórz nowe spotkanie
+        Create new meeting
       </NewMeetingBannerContainer>
       <FormContainer>
         <FormGroup className="formGroup">
-          <FormLabel>Nazwa</FormLabel>
+          <FormLabel>Name</FormLabel>
           <FormControl
             onChange={(e) => setName(e.target.value)}
             placeholder="Podaj nazwę spotkania"
@@ -78,7 +78,7 @@ const CreateMeeting = (props) => {
           />
         </FormGroup>
         <FormGroup className="formGroup">
-          <FormLabel>Godzina początku spotkania</FormLabel>
+          <FormLabel>Meeting start hour</FormLabel>
           <FormControl
             type="datetime-local"
             placeholder="Podaj godzinę początku spotkania"
@@ -87,7 +87,7 @@ const CreateMeeting = (props) => {
           />
         </FormGroup>
         <FormGroup className="formGroup">
-          <FormLabel>Godzina końca spotkania</FormLabel>
+          <FormLabel>Meeting end hour</FormLabel>
           <FormControl
             type="datetime-local"
             placeholder="Podaj godzinę końca spotkania"
@@ -96,18 +96,17 @@ const CreateMeeting = (props) => {
           />
         </FormGroup>
         <FormGroup className="formGroup">
-          <FormLabel>Numer pomieszczenia</FormLabel>
+          <FormLabel>Room number</FormLabel>
           <Select onChange={(e) => setRoom(e.target.value)}>
-            <option>Wybierz pomieszczenie</option>
+            <option>Choose a room</option>
             {rooms && rooms.map((room) => <option>{room.id}</option>)}
           </Select>
         </FormGroup>
         <ConfirmMeetingButton onClick={handleSubmit}>
-          Potwierdź
+          Create
         </ConfirmMeetingButton>
       </FormContainer>
     </CreateMeetingPageCointainer>
   );
-  // return <div>Stwórz spotkanie</div>;
 };
 export default CreateMeeting;

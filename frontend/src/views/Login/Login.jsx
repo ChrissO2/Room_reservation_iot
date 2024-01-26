@@ -33,7 +33,7 @@ export const Login = () => {
       navigate("/meetings");
     } catch {
       setIsWaiting(false);
-      setLoginError("Niepoprawne dane logowania");
+      setLoginError("Invalid login or password");
     }
   };
 
@@ -55,10 +55,10 @@ export const Login = () => {
     <>
       <Notification message={loginError} setMessage={setLoginError} />
       <FormContainer>
-        <BannerContainer>System rezerwacji sal</BannerContainer>
+        <BannerContainer>Room reservation system</BannerContainer>
         <Form className="form">
           <FormGroup className="formGroup">
-            <FormLabel>Nazwa użytkownika</FormLabel>
+            <FormLabel>Username</FormLabel>
             <FormControl
               placeholder="Enter password"
               className="formInput"
@@ -66,7 +66,7 @@ export const Login = () => {
             />
           </FormGroup>
           <FormGroup className="formGroup">
-            <FormLabel>Hasło</FormLabel>
+            <FormLabel>Password</FormLabel>
             <FormControl
               type="password"
               placeholder="Confirm password"
@@ -75,7 +75,7 @@ export const Login = () => {
             />
           </FormGroup>
 
-          <ConfirmButton onClick={handleSubmit}>Zaloguj</ConfirmButton>
+          <ConfirmButton onClick={handleSubmit}>Login</ConfirmButton>
           {isWaiting && <LoadingAnimation />}
         </Form>
       </FormContainer>

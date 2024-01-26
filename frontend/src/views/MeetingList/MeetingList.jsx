@@ -29,14 +29,14 @@ const MeetingList = () => {
 
     return (
         <MainDiv>
-            <TableHeader>Obecne spotkania</TableHeader>
+            <TableHeader>Current meetings</TableHeader>
             <MeetingTable meetings={currentMeetings} />
 
-            <TableHeader>Nadchodzące spotkania</TableHeader>
+            <TableHeader>Upcoming meetings</TableHeader>
             <MeetingTable meetings={upcomingMeetings}></MeetingTable>
 
             <CreateButton variant="success" onClick={onCreateClick}>
-                Utwórz spotkanie
+                Create new meeting
             </CreateButton>
         </MainDiv>
     );

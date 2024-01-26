@@ -24,12 +24,12 @@ const Reports = () => {
     return (
         <MainDiv>
             <TableDiv>
-                <h2>Liczba spotkań w danych pokojach</h2>
+                <h2>Number of meetings in each room</h2>
                 <Table striped bordered hover variant="dark" responsive>
                     <thead>
                         <tr>
-                            <th>Nr pokoju</th>
-                            <th>Liczba spotkań</th>
+                            <th>Room number</th>
+                            <th>No meetings</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -48,12 +48,12 @@ const Reports = () => {
                 <Table striped bordered hover variant="dark" responsive>
                     <thead>
                         <tr>
-                            <th>Nr pokoju</th>
-                            <th>Data</th>
-                            <th>Godzina rozpoczęcia</th>
-                            <th>Godzina zakończenia</th>
-                            <th>Prowadzący</th>
-                            <th>Liczba uczestników</th>
+                            <th>Room number</th>
+                            <th>Date</th>
+                            <th>Start</th>
+                            <th>End</th>
+                            <th>Host</th>
+                            <th>No participants</th>
                         </tr>
                     </thead>
                     <tbody>
