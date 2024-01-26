@@ -44,7 +44,7 @@ const Reports = () => {
             </TableDiv>
 
             <TableDiv>
-                <h2>Meetings in previous 30 days</h2>
+                <h2>Meetings in past 30 days</h2>
                 <Table striped bordered hover variant="dark" responsive>
                     <thead>
                         <tr>
