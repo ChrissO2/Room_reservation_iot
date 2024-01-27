@@ -4,13 +4,16 @@ services:
     build: ./backend/room_reservation_system/
     ports:
       - "8000:8000"
-    volumes:
-      - database:/home/app/webapp/data
     networks:
       - rolo_net
+    volumes:
+      - database:/home/app/webapp/data
+      - /etc/localtime:/etc/localtime:ro
   mqtt-proxy:
     container_name: mqtt-proxy
     build: ./mqtt_proxy/
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
     depends_on:
       - backend
       - broker

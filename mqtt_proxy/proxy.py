@@ -51,8 +51,8 @@ def is_room_free_at(start_date, end_date):
 def room_state():
     current_time = datetime.now()
     room_available = is_room_free_at(
-        (datetime.now() + timedelta(hours=1)).isoformat(),
-        (datetime.now() + timedelta(seconds=5, hours=1)).isoformat(),
+        datetime.now().isoformat(),
+        (datetime.now() + timedelta(seconds=5)).isoformat(),
     )
     payload = {
         "is_free": room_available,
